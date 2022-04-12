@@ -1,0 +1,119 @@
+#----------------------------------------------------------
+# Simple facts
+#----------------------------------------------------------
+
+hasBrother(lucy, jack).
+hasSister(jack,lucy).
+hasSibling(lucy,jack).
+hasSibling(jack,lucy).
+
+#----------------------------------------------------------
+# Section 5.2.1
+#----------------------------------------------------------
+# append(A,B,C) means A concatenated with B is C.
+#----------------------------------------------------------
+
+append([], B, B).
+append([X|A], B, [X|C]) :- append(A, B, C).
+append([1|[2|[]]],[3|[4|[]]],C)?
+
+#----------------------------------------------------------
+# Section 6.1, 6.2
+#----------------------------------------------------------
+# Facts about Family
+# mother(M,X)      - M is mother of X
+# father(F,X)      - F is father of X
+# child(C,X)       - C is child of X
+# parent(P,X)      - P is parent of X
+# grandparent(G,X) - G is grand parent of X
+# ancestor(A,X)    - A is ancestor of X
+#----------------------------------------------------------
+
+parent(P,X) :- mother(P,X).
+parent(P,X) :- father(P,X).
+
+grandparent(G,X) :- parent(G,P), parent(P,X).
+
+ancestor(A,B) :- parent(A,B).
+ancestor(A,B) :- parent(A,X), ancestor(X,B).
+
+# another version
+ancestor2(A,B) :- parent(A,B).
+ancestor2(A,B) :- parent(X,B), ancestor2(A,X).
+
+# yet another version
+ancestor3(A,B) :- parent(A,B).
+ancestor3(A,B) :- ancestor3(A,X), ancestor3(X,B).
+
+#----------------------------------------------------------
+# Section 6.3
+#----------------------------------------------------------
+# Fibonacci number
+# fib(N,V) means Nth Fibonacci number is V
+#----------------------------------------------------------
+
+fib(0,1).
+fib(1,1).
+fib(N+2,W) :- fib(N,U), fib(N+1,V), U + V = W.
+
+#----------------------------------------------------------
+# Fibonacci using succesor function and plus predicate
+#----------------------------------------------------------
+
+fib(0,1).
+fib(1,1).
+fib(s(s(N)),V) :- fib(N,V1), fib(s(N),V2), plus(V1,V2,V).
+
+#----------------------------------------------------------
+# plus(A,B,C) means A + B = C,
+#  which is computed from plus((A-1),(B+1),C).
+#----------------------------------------------------------
+
+plus(0,C,C).
+plus(s(A),B,C) :- plus(A,s(B),C).
+
+#----------------------------------------------------------
+# Section 6.5
+#----------------------------------------------------------
+# power(A,B,C)    - means A^B   = C.
+# multiply(A,B,C) - means A * B = C.
+# plus(A,B,C)     - means A + B = C.
+#----------------------------------------------------------
+
+power(A,0,V) :- !, V=1.                # A^0 = 1
+
+power(A,N,V) :- even(N), !,            # N  is even
+                multiply(A,A,B),       # B  = A^2
+                multiply(M,2,N),       # M  = N/2
+                power(B,M,V).          # V  = B^M = (A^2)^(N/2)
+
+power(A,N,V) :- multiply(A,A,B),       # B  = A^2
+                plus(N1,1,N),          # N1 = N - 1
+                multiple(M,2,N1),      # M  = N1/2 = (N-1)/2
+                power(B,M,V2),         # V2 = B^M  = (A^2)^((N-1)/2)
+                multiply(V2,A,V).      # V  = A*V2 = A * (A^2)^((N-1)/2)
+
+#----------------------------------------------------------
+# Section 6.6
+#----------------------------------------------------------
+
+grandparent(G,X) :- parent(G,P), parent(P,X).
+
+cousin(X,Y)      :- X != Y,
+                    not sibling(X,Y),
+                    grandparent(Z,X),
+                    grandparent(Z,Y).
+
+americanCousin(X,Y) :- cousin(X,Y), !, american(X).
+
+#----------------------------------------------------------
+# Section 6.7 -- Negation
+#----------------------------------------------------------
+
+composite(N) :- N > 1, ~ prime(N).
+composite(N) :- N > 1, \+ prime(N).
+composite(N) :- N > 1, not (prime(N)).
+
+#----------------------------------------------------------
+# End
+#----------------------------------------------------------

@@ -1,0 +1,44 @@
+<PROGRAM>
+    <FACT>
+        <PREDICATE name='sibling'>
+            <CONSTANT>reena</CONSTANT>
+            <CONSTANT>suresh</CONSTANT>
+        </PREDICATE>
+    </FACT>
+    <FACT>
+        <PREDICATE name='sibling'>
+            <CONSTANT>hitesh</CONSTANT>
+            <CONSTANT>reena</CONSTANT>
+        </PREDICATE>
+    </FACT>
+    <FACT>
+        <PREDICATE name='sibling'>
+            <CONSTANT>suresh</CONSTANT>
+            <CONSTANT>hitesh</CONSTANT>
+        </PREDICATE>
+    </FACT>
+    <RULE>
+        <PREDICATE name='sibling'>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </PREDICATE>
+        <PREDICATE name='sibling'>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Z</VARIABLE>
+        </PREDICATE>
+        <PREDICATE name='sibling'>
+            <VARIABLE>Z</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </PREDICATE>
+    </RULE>
+    <RULE>
+        <PREDICATE name='sibling'>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </PREDICATE>
+        <PREDICATE name='sibling'>
+            <VARIABLE>Y</VARIABLE>
+            <VARIABLE>X</VARIABLE>
+        </PREDICATE>
+    </RULE>
+</PROGRAM>

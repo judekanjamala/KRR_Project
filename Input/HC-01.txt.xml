@@ -1,0 +1,439 @@
+<PROGRAM>
+    <FACT>
+        <PREDICATE name='hasBrother'>
+            <CONSTANT>lucy</CONSTANT>
+            <CONSTANT>jack</CONSTANT>
+        </PREDICATE>
+    </FACT>
+    <FACT>
+        <PREDICATE name='hasSister'>
+            <CONSTANT>jack</CONSTANT>
+            <CONSTANT>lucy</CONSTANT>
+        </PREDICATE>
+    </FACT>
+    <FACT>
+        <PREDICATE name='hasSibling'>
+            <CONSTANT>lucy</CONSTANT>
+            <CONSTANT>jack</CONSTANT>
+        </PREDICATE>
+    </FACT>
+    <FACT>
+        <PREDICATE name='hasSibling'>
+            <CONSTANT>jack</CONSTANT>
+            <CONSTANT>lucy</CONSTANT>
+        </PREDICATE>
+    </FACT>
+    <FACT>
+        <PREDICATE name='append'>
+            <NIL/>
+            <VARIABLE>B</VARIABLE>
+            <VARIABLE>B</VARIABLE>
+        </PREDICATE>
+    </FACT>
+    <RULE>
+        <PREDICATE name='append'>
+            <CONS>
+                <VARIABLE>X</VARIABLE>
+                <VARIABLE>A</VARIABLE>
+            </CONS>
+            <VARIABLE>B</VARIABLE>
+            <CONS>
+                <VARIABLE>X</VARIABLE>
+                <VARIABLE>C</VARIABLE>
+            </CONS>
+        </PREDICATE>
+        <PREDICATE name='append'>
+            <VARIABLE>A</VARIABLE>
+            <VARIABLE>B</VARIABLE>
+            <VARIABLE>C</VARIABLE>
+        </PREDICATE>
+    </RULE>
+    <QUERY>
+        <PREDICATE name='append'>
+            <CONS>
+                <INTEGER>1</INTEGER>
+                <CONS>
+                    <INTEGER>2</INTEGER>
+                    <NIL/>
+                </CONS>
+            </CONS>
+            <CONS>
+                <INTEGER>3</INTEGER>
+                <CONS>
+                    <INTEGER>4</INTEGER>
+                    <NIL/>
+                </CONS>
+            </CONS>
+            <VARIABLE>C</VARIABLE>
+        </PREDICATE>
+    </QUERY>
+    <RULE>
+        <PREDICATE name='parent'>
+            <VARIABLE>P</VARIABLE>
+            <VARIABLE>X</VARIABLE>
+        </PREDICATE>
+        <PREDICATE name='mother'>
+            <VARIABLE>P</VARIABLE>
+            <VARIABLE>X</VARIABLE>
+        </PREDICATE>
+    </RULE>
+    <RULE>
+        <PREDICATE name='parent'>
+            <VARIABLE>P</VARIABLE>
+            <VARIABLE>X</VARIABLE>
+        </PREDICATE>
+        <PREDICATE name='father'>
+            <VARIABLE>P</VARIABLE>
+            <VARIABLE>X</VARIABLE>
+        </PREDICATE>
+    </RULE>
+    <RULE>
+        <PREDICATE name='grandparent'>
+            <VARIABLE>G</VARIABLE>
+            <VARIABLE>X</VARIABLE>
+        </PREDICATE>
+        <PREDICATE name='parent'>
+            <VARIABLE>G</VARIABLE>
+            <VARIABLE>P</VARIABLE>
+        </PREDICATE>
+        <PREDICATE name='parent'>
+            <VARIABLE>P</VARIABLE>
+            <VARIABLE>X</VARIABLE>
+        </PREDICATE>
+    </RULE>
+    <RULE>
+        <PREDICATE name='ancestor'>
+            <VARIABLE>A</VARIABLE>
+            <VARIABLE>B</VARIABLE>
+        </PREDICATE>
+        <PREDICATE name='parent'>
+            <VARIABLE>A</VARIABLE>
+            <VARIABLE>B</VARIABLE>
+        </PREDICATE>
+    </RULE>
+    <RULE>
+        <PREDICATE name='ancestor'>
+            <VARIABLE>A</VARIABLE>
+            <VARIABLE>B</VARIABLE>
+        </PREDICATE>
+        <PREDICATE name='parent'>
+            <VARIABLE>A</VARIABLE>
+            <VARIABLE>X</VARIABLE>
+        </PREDICATE>
+        <PREDICATE name='ancestor'>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>B</VARIABLE>
+        </PREDICATE>
+    </RULE>
+    <RULE>
+        <PREDICATE name='ancestor2'>
+            <VARIABLE>A</VARIABLE>
+            <VARIABLE>B</VARIABLE>
+        </PREDICATE>
+        <PREDICATE name='parent'>
+            <VARIABLE>A</VARIABLE>
+            <VARIABLE>B</VARIABLE>
+        </PREDICATE>
+    </RULE>
+    <RULE>
+        <PREDICATE name='ancestor2'>
+            <VARIABLE>A</VARIABLE>
+            <VARIABLE>B</VARIABLE>
+        </PREDICATE>
+        <PREDICATE name='parent'>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>B</VARIABLE>
+        </PREDICATE>
+        <PREDICATE name='ancestor2'>
+            <VARIABLE>A</VARIABLE>
+            <VARIABLE>X</VARIABLE>
+        </PREDICATE>
+    </RULE>
+    <RULE>
+        <PREDICATE name='ancestor3'>
+            <VARIABLE>A</VARIABLE>
+            <VARIABLE>B</VARIABLE>
+        </PREDICATE>
+        <PREDICATE name='parent'>
+            <VARIABLE>A</VARIABLE>
+            <VARIABLE>B</VARIABLE>
+        </PREDICATE>
+    </RULE>
+    <RULE>
+        <PREDICATE name='ancestor3'>
+            <VARIABLE>A</VARIABLE>
+            <VARIABLE>B</VARIABLE>
+        </PREDICATE>
+        <PREDICATE name='ancestor3'>
+            <VARIABLE>A</VARIABLE>
+            <VARIABLE>X</VARIABLE>
+        </PREDICATE>
+        <PREDICATE name='ancestor3'>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>B</VARIABLE>
+        </PREDICATE>
+    </RULE>
+    <FACT>
+        <PREDICATE name='fib'>
+            <INTEGER>0</INTEGER>
+            <INTEGER>1</INTEGER>
+        </PREDICATE>
+    </FACT>
+    <FACT>
+        <PREDICATE name='fib'>
+            <INTEGER>1</INTEGER>
+            <INTEGER>1</INTEGER>
+        </PREDICATE>
+    </FACT>
+    <RULE>
+        <PREDICATE name='fib'>
+            <ADD>
+                <VARIABLE>N</VARIABLE>
+                <INTEGER>2</INTEGER>
+            </ADD>
+            <VARIABLE>W</VARIABLE>
+        </PREDICATE>
+        <PREDICATE name='fib'>
+            <VARIABLE>N</VARIABLE>
+            <VARIABLE>U</VARIABLE>
+        </PREDICATE>
+        <PREDICATE name='fib'>
+            <ADD>
+                <VARIABLE>N</VARIABLE>
+                <INTEGER>1</INTEGER>
+            </ADD>
+            <VARIABLE>V</VARIABLE>
+        </PREDICATE>
+        <EQ>
+            <ADD>
+                <VARIABLE>U</VARIABLE>
+                <VARIABLE>V</VARIABLE>
+            </ADD>
+            <VARIABLE>W</VARIABLE>
+        </EQ>
+    </RULE>
+    <FACT>
+        <PREDICATE name='fib'>
+            <INTEGER>0</INTEGER>
+            <INTEGER>1</INTEGER>
+        </PREDICATE>
+    </FACT>
+    <FACT>
+        <PREDICATE name='fib'>
+            <INTEGER>1</INTEGER>
+            <INTEGER>1</INTEGER>
+        </PREDICATE>
+    </FACT>
+    <RULE>
+        <PREDICATE name='fib'>
+            <FUNCTION name='s'>
+                <FUNCTION name='s'>
+                    <VARIABLE>N</VARIABLE>
+                </FUNCTION>
+            </FUNCTION>
+            <VARIABLE>V</VARIABLE>
+        </PREDICATE>
+        <PREDICATE name='fib'>
+            <VARIABLE>N</VARIABLE>
+            <VARIABLE>V1</VARIABLE>
+        </PREDICATE>
+        <PREDICATE name='fib'>
+            <FUNCTION name='s'>
+                <VARIABLE>N</VARIABLE>
+            </FUNCTION>
+            <VARIABLE>V2</VARIABLE>
+        </PREDICATE>
+        <PREDICATE name='plus'>
+            <VARIABLE>V1</VARIABLE>
+            <VARIABLE>V2</VARIABLE>
+            <VARIABLE>V</VARIABLE>
+        </PREDICATE>
+    </RULE>
+    <FACT>
+        <PREDICATE name='plus'>
+            <INTEGER>0</INTEGER>
+            <VARIABLE>C</VARIABLE>
+            <VARIABLE>C</VARIABLE>
+        </PREDICATE>
+    </FACT>
+    <RULE>
+        <PREDICATE name='plus'>
+            <FUNCTION name='s'>
+                <VARIABLE>A</VARIABLE>
+            </FUNCTION>
+            <VARIABLE>B</VARIABLE>
+            <VARIABLE>C</VARIABLE>
+        </PREDICATE>
+        <PREDICATE name='plus'>
+            <VARIABLE>A</VARIABLE>
+            <FUNCTION name='s'>
+                <VARIABLE>B</VARIABLE>
+            </FUNCTION>
+            <VARIABLE>C</VARIABLE>
+        </PREDICATE>
+    </RULE>
+    <RULE>
+        <PREDICATE name='power'>
+            <VARIABLE>A</VARIABLE>
+            <INTEGER>0</INTEGER>
+            <VARIABLE>V</VARIABLE>
+        </PREDICATE>
+        <CUT/>
+        <EQ>
+            <VARIABLE>V</VARIABLE>
+            <INTEGER>1</INTEGER>
+        </EQ>
+    </RULE>
+    <RULE>
+        <PREDICATE name='power'>
+            <VARIABLE>A</VARIABLE>
+            <VARIABLE>N</VARIABLE>
+            <VARIABLE>V</VARIABLE>
+        </PREDICATE>
+        <PREDICATE name='even'>
+            <VARIABLE>N</VARIABLE>
+        </PREDICATE>
+        <CUT/>
+        <PREDICATE name='multiply'>
+            <VARIABLE>A</VARIABLE>
+            <VARIABLE>A</VARIABLE>
+            <VARIABLE>B</VARIABLE>
+        </PREDICATE>
+        <PREDICATE name='multiply'>
+            <VARIABLE>M</VARIABLE>
+            <INTEGER>2</INTEGER>
+            <VARIABLE>N</VARIABLE>
+        </PREDICATE>
+        <PREDICATE name='power'>
+            <VARIABLE>B</VARIABLE>
+            <VARIABLE>M</VARIABLE>
+            <VARIABLE>V</VARIABLE>
+        </PREDICATE>
+    </RULE>
+    <RULE>
+        <PREDICATE name='power'>
+            <VARIABLE>A</VARIABLE>
+            <VARIABLE>N</VARIABLE>
+            <VARIABLE>V</VARIABLE>
+        </PREDICATE>
+        <PREDICATE name='multiply'>
+            <VARIABLE>A</VARIABLE>
+            <VARIABLE>A</VARIABLE>
+            <VARIABLE>B</VARIABLE>
+        </PREDICATE>
+        <PREDICATE name='plus'>
+            <VARIABLE>N1</VARIABLE>
+            <INTEGER>1</INTEGER>
+            <VARIABLE>N</VARIABLE>
+        </PREDICATE>
+        <PREDICATE name='multiple'>
+            <VARIABLE>M</VARIABLE>
+            <INTEGER>2</INTEGER>
+            <VARIABLE>N1</VARIABLE>
+        </PREDICATE>
+        <PREDICATE name='power'>
+            <VARIABLE>B</VARIABLE>
+            <VARIABLE>M</VARIABLE>
+            <VARIABLE>V2</VARIABLE>
+        </PREDICATE>
+        <PREDICATE name='multiply'>
+            <VARIABLE>V2</VARIABLE>
+            <VARIABLE>A</VARIABLE>
+            <VARIABLE>V</VARIABLE>
+        </PREDICATE>
+    </RULE>
+    <RULE>
+        <PREDICATE name='grandparent'>
+            <VARIABLE>G</VARIABLE>
+            <VARIABLE>X</VARIABLE>
+        </PREDICATE>
+        <PREDICATE name='parent'>
+            <VARIABLE>G</VARIABLE>
+            <VARIABLE>P</VARIABLE>
+        </PREDICATE>
+        <PREDICATE name='parent'>
+            <VARIABLE>P</VARIABLE>
+            <VARIABLE>X</VARIABLE>
+        </PREDICATE>
+    </RULE>
+    <RULE>
+        <PREDICATE name='cousin'>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </PREDICATE>
+        <NE>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </NE>
+        <NOT>
+            <PREDICATE name='sibling'>
+                <VARIABLE>X</VARIABLE>
+                <VARIABLE>Y</VARIABLE>
+            </PREDICATE>
+        </NOT>
+        <PREDICATE name='grandparent'>
+            <VARIABLE>Z</VARIABLE>
+            <VARIABLE>X</VARIABLE>
+        </PREDICATE>
+        <PREDICATE name='grandparent'>
+            <VARIABLE>Z</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </PREDICATE>
+    </RULE>
+    <RULE>
+        <PREDICATE name='americanCousin'>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </PREDICATE>
+        <PREDICATE name='cousin'>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </PREDICATE>
+        <CUT/>
+        <PREDICATE name='american'>
+            <VARIABLE>X</VARIABLE>
+        </PREDICATE>
+    </RULE>
+    <RULE>
+        <PREDICATE name='composite'>
+            <VARIABLE>N</VARIABLE>
+        </PREDICATE>
+        <GT>
+            <VARIABLE>N</VARIABLE>
+            <INTEGER>1</INTEGER>
+        </GT>
+        <NOT>
+            <PREDICATE name='prime'>
+                <VARIABLE>N</VARIABLE>
+            </PREDICATE>
+        </NOT>
+    </RULE>
+    <RULE>
+        <PREDICATE name='composite'>
+            <VARIABLE>N</VARIABLE>
+        </PREDICATE>
+        <GT>
+            <VARIABLE>N</VARIABLE>
+            <INTEGER>1</INTEGER>
+        </GT>
+        <NOT>
+            <PREDICATE name='prime'>
+                <VARIABLE>N</VARIABLE>
+            </PREDICATE>
+        </NOT>
+    </RULE>
+    <RULE>
+        <PREDICATE name='composite'>
+            <VARIABLE>N</VARIABLE>
+        </PREDICATE>
+        <GT>
+            <VARIABLE>N</VARIABLE>
+            <INTEGER>1</INTEGER>
+        </GT>
+        <NOT>
+            <PREDICATE name='prime'>
+                <VARIABLE>N</VARIABLE>
+            </PREDICATE>
+        </NOT>
+    </RULE>
+</PROGRAM>

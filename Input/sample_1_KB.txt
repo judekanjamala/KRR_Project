@@ -1,0 +1,9 @@
+# Facts
+sibling(reena, suresh).
+sibling(hitesh, reena).
+sibling(suresh, hitesh).
+
+# Rules
+sibling(X,Y) :- sibling(X,Z), sibling(Z,Y).
+sibling(X,Y) :- sibling(Y,X).
+
