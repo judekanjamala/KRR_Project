@@ -5,7 +5,7 @@ def eval(term, var_sub):
     pass
 
 def match(term1, term2, var_sub):
-    
+
 
     if term1.is_atomic and term2.is_atomic:
         if term1 == term2:
@@ -73,8 +73,8 @@ def solve_goals(KB, goals, mgu={}):
                 print(f"Goal {goal} matched head {head} under MGU: {new_mgu}")
 
                 body = KB[head]
-                subgoals = {instantiate_term(subgoal, new_mgu) for subgoal in body}
-                if solve_goals(KB, goals.union(subgoals), new_mgu):
+                subgoals = [instantiate_term(subgoal, new_mgu) for subgoal in body[-1::-1]]
+                if solve_goals(KB, goals + subgoals, new_mgu):
                     solved = True
 
     else:
