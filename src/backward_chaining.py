@@ -205,12 +205,17 @@ def refresh_variables(head, body):
     return head, refreshed_body
 
 
-def solve_goals(kb, goals, mgu={}, cut_present=False):
+def solve_goals(kb, goals, mgu={}, cut_area=False):
     
     solved = False
     if goals:
         
         goal = goals.pop(0)
+
+        if goal.name == "cut":
+            cut_area = False
+            solve_goals(kb, goals, mgu, cut_area)
+
         print(f"Solving goal:\n{goal}\n")
         
         # Search for matching clause heads
@@ -219,6 +224,8 @@ def solve_goals(kb, goals, mgu={}, cut_present=False):
             # suffix_variables(head, kb[head], i)
             head, body = refresh_variables(head, kb[head])
             unifier = match(goal, head, mgu)
+                
+
             # unifier = simplify(unifier)
             
             # Check if match succeeded
@@ -235,7 +242,7 @@ def solve_goals(kb, goals, mgu={}, cut_present=False):
 
                 for g in body:
                     if g.name == "cut":
-                        cut_reached = True
+                        cut_area = True
 
                 updated_goals = body + goals
                 updated_goals = [apply_substitution(g, unifier) for g in updated_goals]
@@ -244,8 +251,11 @@ def solve_goals(kb, goals, mgu={}, cut_present=False):
                 for g in updated_goals:
                     print(g)
                 print("\n")
-                if solve_goals(kb, updated_goals, unifier):
+                if solve_goals(kb, updated_goals, unifier, cut_area):
                     solved = True
+                
+                    if cut_area:
+                        return solved
 
     else:
         print(f"MGU:\n")
