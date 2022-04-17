@@ -5,6 +5,7 @@ from classes import CompoundTerm, VariableTerm
 
 # TODO
 # 1. simplify:  Add check for circularity in substitution.
+# 2. evaluate_term: handles integer numbers only.
 
 
 def match(term1, term2, unifier):
@@ -110,19 +111,39 @@ def evaluate_term(term):
             return [head] + evaluate_term(term.args[1])
 
         elif term.name == "add":
-            return int(evaluate_term(term.args[0])) + int(evaluate_term(term.args[1]))
+            arg1 = evaluate_term(term.args[0])
+            arg2 = evaluate_term(term.args[1])
+            if isinstance(arg1, int) and isinstance(arg2, int):
+                val = arg1 + arg2
+            else:
+                val = f"({arg1} + {arg2})"
+            return val
         
-        # elif term.name == "eq":
-        #     return evaluate_term(term.args[0]) == evaluate_term(term.args[1])
-        
-        # elif term.name == "not":
-        #     return not(evaluate_term(term.args[0]))
+        elif term.name == "eq":
+            arg1 = evaluate_term(term.args[0])
+            arg2 = evaluate_term(term.args[1])
 
-        # elif term.name == "ne":
-        #     return evaluate_term(term.args[0]) != evaluate_term(term.args[1])
+            val = f"({arg1} = {arg2})"
+            return val
         
-        # elif term.name == "gt":
-        #     return evaluate_term(term.args[0]) > evaluate_term(term.args[1])
+        elif term.name == "not":
+            arg1 = evaluate_term(term.args[0])
+            val = f"(not {arg1})"
+            return val
+
+        elif term.name == "ne":
+            arg1 = evaluate_term(term.args[0])
+            arg2 = evaluate_term(term.args[1])
+
+            val = f"({arg1} != {arg2})"
+            return val
+        
+        elif term.name == "gt":
+            arg1 = evaluate_term(term.args[0])
+            arg2 = evaluate_term(term.args[1])
+
+            val = f"({arg1} > {arg2})"
+            return val
         
         else:
 
@@ -184,7 +205,7 @@ def refresh_variables(head, body):
     return head, refreshed_body
 
 
-def solve_goals(kb, goals, mgu={}):
+def solve_goals(kb, goals, mgu={}, cut_present=False):
     
     solved = False
     if goals:
@@ -195,7 +216,6 @@ def solve_goals(kb, goals, mgu={}):
         # Search for matching clause heads
         for i, head in enumerate(kb):
 
-            cut_reached = True
             # suffix_variables(head, kb[head], i)
             head, body = refresh_variables(head, kb[head])
             unifier = match(goal, head, mgu)
@@ -212,6 +232,10 @@ def solve_goals(kb, goals, mgu={}):
                 for k, v in unifier.items():
                     print(k,":", v)
                 print("\n")
+
+                for g in body:
+                    if g.name == "cut":
+                        cut_reached = True
 
                 updated_goals = body + goals
                 updated_goals = [apply_substitution(g, unifier) for g in updated_goals]
@@ -243,7 +267,7 @@ def solve_goals(kb, goals, mgu={}):
 
         explore_more = input("Enter c to look for more solutions:").lower()
         if explore_more == "c":
-            solved = True
+            solved = False
         else:
             sys.exit(0)
 
