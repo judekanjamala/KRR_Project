@@ -3,6 +3,7 @@ import sys
 
 
 from xml_parsers import parse_KB, parse_query
+from backward_chaining import solve_goals
 
 sys.path.append("/home/jude/Mtech/Sem_2/KRR/Project/src")
 
@@ -22,7 +23,7 @@ args = parser.parse_args()
 
 def main():
     
-    # kb = parse_KB(args.kb)
+    kb = parse_KB(args.kb)
     # for key, val in kb.items():
     #     print(key,":")
     #     for v in val:
@@ -30,10 +31,18 @@ def main():
         
     #     print("\n")
 
-    query = parse_query(args.query)
+    print("FINISHED PARSING KB")
 
+    query = parse_query(args.query)
+    print("FINISHED PARSING QUERY")
+
+    print("Query:")
     for goal in query:
         print(goal)
+
+    print("\n")
+
+    print(solve_goals(kb, query))
 
 
 if __name__ == "__main__":

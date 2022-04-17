@@ -1,10 +1,23 @@
-from turtle import update
-from collections import deque
+# from turtle import update
 import sys
+
+from classes import CompoundTerm, VariableTerm
+
+# TODO
+# 1. simplify:  Add check for circularity in substitution.
 
 
 def match(term1, term2, unifier):
 
+    # print("Matching:")
+    # print("TERM1:", term1)
+    # print("TERM2:",term2 )
+    # print("Unifier:")
+    # for k, v in unifier.items():
+    #     print(k,":", v)
+    
+    # print("\n")
+    
     if term1.is_constant and term2.is_constant:
         if term1.val == term2.val:
             return unifier
@@ -18,21 +31,25 @@ def match(term1, term2, unifier):
         return var_match(term2, term1, unifier)
     
     elif term1.is_compound and term2.is_compound:
-        if len(term1.args) != len(term2.args):
+        if term1.name != term2.name:
             return None
     
-        for i, term1_arg in enumerate(term1.args):
-            unifier = match(term1_arg, term2.args[i], unifier)
-            if unifier is None:
-                return None
+        elif len(term1.args) == len(term2.args):
+            for i, term1_arg in enumerate(term1.args):
+                unifier = match(term1_arg, term2.args[i], unifier)
+                if unifier is None:
+                    return None
 
-        return unifier
+            return unifier
+        else:
+            return None
+
     
     else:
         return None
 
 def var_match(var_term, term2, unifier):
-    if var_term in term2.variables:
+    if term2.is_compound and var_term in term2.variables:
         return None
 
     elif var_term.name in unifier:
@@ -44,15 +61,24 @@ def var_match(var_term, term2, unifier):
 
 
 def apply_substitution(term, sub):
-    if term.is_atomic:
+    if term.is_constant:
         return term
+
+    elif term.is_variable:
+        if term in sub:
+            return sub[term]
+        else:
+            return term
 
     elif term.is_compound:
         instantiated_args = []
+        # print(term)
         for arg in term.args:
-            instantiated_args.append(instantiate_term(arg, var_sub))
+            # print(arg)
+            instantiated_args.append(apply_substitution(arg, sub))
         
-        return Term(term.name, instantiated_args)
+        # print(instantiated_args)
+        return CompoundTerm(term.name, instantiated_args)
 
 
 def suffix_variables(head, body, suffix):
@@ -66,22 +92,112 @@ def suffix_variables(head, body, suffix):
     
     return
 
+def evaluate_term(term):
 
-# def simplify(sub):
-#     s
+    if term.is_constant:
+        if term.val == "nil":
+            return []
+        
+        else:
+            return term.val
+        
+    if term.is_variable:
+        return term.name
+    
+    elif term.is_compound:
+        if term.name == "cons":
+            head = evaluate_term(term.args[0])
+            return [head] + evaluate_term(term.args[1])
+
+        elif term.name == "add":
+            return int(evaluate_term(term.args[0])) + int(evaluate_term(term.args[1]))
+        
+        # elif term.name == "eq":
+        #     return evaluate_term(term.args[0]) == evaluate_term(term.args[1])
+        
+        # elif term.name == "not":
+        #     return not(evaluate_term(term.args[0]))
+
+        # elif term.name == "ne":
+        #     return evaluate_term(term.args[0]) != evaluate_term(term.args[1])
+        
+        # elif term.name == "gt":
+        #     return evaluate_term(term.args[0]) > evaluate_term(term.args[1])
+        
+        else:
+
+            s = f"{term.name}("
+            for arg in term.args:
+                s += f"{evaluate_term(arg)}, "
+
+            s = s[:-2] + ")"
+
+            return s
 
 
-def solve_goals(KB, goals, mgu={}):
+
+def simplify(term, sub, visited=set()):
+
+    if term.is_constant:
+        return term
+    
+    elif term.is_variable:
+        if term in sub:
+            # visited.add(term)
+            return simplify(sub[term], sub)
+        else:
+            return term
+        
+    elif term.is_compound:
+        args = [simplify(arg, sub) for arg in term.args]
+
+        return CompoundTerm(term.name, args)
+
+
+def replace_variables(term, sub):
+
+    if term.is_constant:
+        return term
+
+    elif term.is_variable:
+        return sub[term]
+    
+    elif term.is_compound:
+        args = [replace_variables(arg, sub) for arg in term.args]
+
+        return CompoundTerm(term.name, args)
+
+
+def refresh_variables(head, body):
+    old_to_new = {}
+    
+    old_vars = head.variables
+    for g in body:
+        old_vars = old_vars.union(g.variables)
+
+    old_to_new = {old_var: VariableTerm(old_var.name, old_var.clause) for old_var in old_vars}
+
+    head = replace_variables(head, old_to_new)
+
+    refreshed_body = [replace_variables(goal, old_to_new) for goal in body]
+
+    return head, refreshed_body
+
+
+def solve_goals(kb, goals, mgu={}):
     
     solved = False
     if goals:
         
         goal = goals.pop(0)
-        print(f"Solving goal: {goal}")
+        print(f"Solving goal:\n{goal}\n")
         
         # Search for matching clause heads
-        for i, head in enumerate(KB):
-            # suffix_variables(head, KB[head], i)
+        for i, head in enumerate(kb):
+
+            cut_reached = True
+            # suffix_variables(head, kb[head], i)
+            head, body = refresh_variables(head, kb[head])
             unifier = match(goal, head, mgu)
             # unifier = simplify(unifier)
             
@@ -92,17 +208,38 @@ def solve_goals(KB, goals, mgu={}):
             else:
                 # Reduction
 
-                print(f"Goal {goal} matched head {head} under unifier: {unifier}")
+                print(f"Head:\n{head}\n\nUnifier:")
+                for k, v in unifier.items():
+                    print(k,":", v)
+                print("\n")
 
-                body = KB[head]
                 updated_goals = body + goals
                 updated_goals = [apply_substitution(g, unifier) for g in updated_goals]
                 
-                if solve_goals(KB, updated_goals, unifier):
+                print("NEW GOALS:")
+                for g in updated_goals:
+                    print(g)
+                print("\n")
+                if solve_goals(kb, updated_goals, unifier):
                     solved = True
 
     else:
-        print(f"MGU: {mgu}")
+        print(f"MGU:\n")
+        for k, v in mgu.items():
+            print(k,":", v)
+        print("\n")
+
+        variables_present = False
+        for v in mgu:
+            if v.clause == 'q':
+                variables_present = True
+                simplified_val = simplify(v, mgu)
+                print(f"{v.name} = {evaluate_term(simplified_val)}")
+        
+        if not variables_present:
+            print("True")
+            sys.exit(0)
+
 
         explore_more = input("Enter c to look for more solutions:").lower()
         if explore_more == "c":

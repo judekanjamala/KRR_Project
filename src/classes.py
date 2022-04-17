@@ -9,7 +9,7 @@ class Term():
 
 class ConstantTerm(Term):
     
-    def __init__(self, val) -> None:
+    def __init__(self, val):
        
         super().__init__()
         self.is_constant = True
@@ -21,21 +21,21 @@ class ConstantTerm(Term):
 class VariableTerm(Term):
     count = 0
     
-    def __init__(self, name, clause_num=None) -> None:
+    def __init__(self, name, clause=None):
     
         super().__init__()
         self.is_variable = True
         self.name = name
-        self.clause_num = clause_num
+        self.clause = clause
         self.__class__.count += 1
         self.id = self.__class__.count
     
     def __repr__(self) -> str:
-        return f"VariableTerm(name={self.name}, clause_num={self.clause_num}, id={self.id})"
+        return f"VariableTerm(name={self.name}, clause={self.clause}, id={self.id})"
 
 class CompoundTerm(Term):
     
-    def __init__(self, name, args) -> None:
+    def __init__(self, name, args):
         super().__init__()
         self.is_compound = True
         self.name = name

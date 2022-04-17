@@ -3,6 +3,12 @@ import xml.etree.ElementTree as ET
 
 from classes import ConstantTerm, VariableTerm, CompoundTerm
 
+# TODO
+# 1. parse_predicate:
+#   1. Remove the variable collection code, instead relying on call by reference
+#       property. variable_terms will add a new entry whenever a new one is
+#       encountered and this will be retained when returning from the call.
+
 
 def parse_predicate(predicate, variable_terms={}, clause_num=None):
     
