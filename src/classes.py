@@ -9,10 +9,14 @@ class Term():
 
 class ConstantTerm(Term):
     
-    def __init__(self, val):
+    def __init__(self, val, is_integer=False):
        
         super().__init__()
         self.is_constant = True
+        self.is_integer = is_integer
+        if is_integer:
+            val = int(val)
+            
         self.val = val
 
     def __repr__(self) -> str:
