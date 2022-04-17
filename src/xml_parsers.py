@@ -6,11 +6,14 @@ from classes import ConstantTerm, VariableTerm, CompoundTerm
 
 def parse_predicate(predicate, variable_terms={}, clause_num=None):
     
+    # print("VARIABLES", variable_terms)
     variables = collect_variables(predicate)
 
     for v in variables:
         if v not in variable_terms:
             variable_terms[v] = VariableTerm(v, clause_num)
+    
+    # print("VARIABLES AFTER COLLECTION", variable_terms)
 
     if predicate.tag == "CONS":
         predicate.attrib["name"] = "cons"
@@ -46,15 +49,16 @@ def parse_predicate(predicate, variable_terms={}, clause_num=None):
             arg_terms.append(ConstantTerm(val=int(arg.text)))
         
         elif arg.tag == "VARIABLE":
-            arg_terms.append(variable_terms[arg.text])
+            if arg.text in variable_terms:
+                arg_terms.append(variable_terms[arg.text])
         
         elif arg.tag == "NIL":
             arg_terms.append(ConstantTerm(val='nil'))
         
         else:
-            arg_terms.append(parse_predicate(arg, variable_terms))
+            arg_terms.append(parse_predicate(arg, variable_terms, clause_num))
 
-    # print("Current")
+    # print("CONSTRUCTING COMPOUNDTERM")
     # print(predicate.tag, predicate.attrib)
     # print(arg.tag,arg.text)
 
@@ -63,6 +67,7 @@ def parse_predicate(predicate, variable_terms={}, clause_num=None):
 
 def collect_variables(predicate):
 
+    # print("COLLECTING VARIABLES")
     variables = set()
 
     for v in predicate.iter('VARIABLE'):
@@ -73,6 +78,8 @@ def collect_variables(predicate):
 
 def parse_rule(rule, count):
 
+    # print("PARSING RULE")
+
     variables = set()
     for goal in rule:
         variables = variables.union(collect_variables(goal))
@@ -81,8 +88,12 @@ def parse_rule(rule, count):
     for v in variables:
         variable_terms[v] = VariableTerm(v, count)
     
+    # print(f"VARIABLES:", variable_terms)
+    
+    # print("PARSING HEAD")
     head = parse_predicate(rule[0], variable_terms, count)
 
+    # print("PARSING BODY")
     body = []
     for goal in rule[1:]:
         body.append(parse_predicate(goal, variable_terms, count))
@@ -99,6 +110,8 @@ def parse_KB(file):
     kb = {}
     for i, clause in enumerate(program):
         
+        i += 1
+        # print(f"PARSING {i}th CLAUSE")
         if clause.tag == "FACT":
             fact = parse_predicate(clause[0], clause_num=i)
             kb[fact] = []
@@ -114,10 +127,9 @@ def parse_query(file):
     tree = ET.parse(file)
 
     query = tree.getroot()[0]
+    head, body = parse_rule(query, 'q')
 
-    goals = []
-    for goal in query:
-        goals.append(parse_predicate(goal, clause_num='q'))
+    goals = [head] + body
     
     return goals
 

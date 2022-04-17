@@ -1,48 +1,49 @@
 from turtle import update
+from collections import deque
 import sys
 
-def eval(term, var_sub):
-    pass
 
-def match(term1, term2, var_sub):
+def match(term1, term2, unifier):
 
-
-    if term1.is_atomic and term2.is_atomic:
-        if term1 == term2:
-            return var_sub
+    if term1.is_constant and term2.is_constant:
+        if term1.val == term2.val:
+            return unifier
         else:
             return None
     
-    elif term1.is_var:
-        return var_match(term1, term2, var_sub)
+    elif term1.is_variable:
+        return var_match(term1, term2, unifier)
     
-    elif term2.is_var:
-        return var_match(term2, term1, var_sub)
+    elif term2.is_variable:
+        return var_match(term2, term1, unifier)
     
-    elif len(term1) != len(term2):
-        return None
-    
-    for i in range(len(term1)):
-        var_sub = match(term1[i], term1[i], var_sub)
-        if var_sub is None:
+    elif term1.is_compound and term2.is_compound:
+        if len(term1.args) != len(term2.args):
             return None
+    
+        for i, term1_arg in enumerate(term1.args):
+            unifier = match(term1_arg, term2.args[i], unifier)
+            if unifier is None:
+                return None
 
-    return var_sub
-
-def var_match(var, term2, var_sub):
-    if var in term2:
-        return None
-
-    elif var in var_sub:
-        var_sub = match(var_sub[var], term2, var_sub)
-        return var_sub
+        return unifier
     
     else:
-        var_sub[var] = term2
-        return var_sub
-    
+        return None
 
-def instantiate_term(term, var_sub):
+def var_match(var_term, term2, unifier):
+    if var_term in term2.variables:
+        return None
+
+    elif var_term.name in unifier:
+        return match(unifier[var_term], term2, unifier)
+    
+    else:
+        unifier[var_term] = term2
+        return unifier
+
+
+def apply_substitution(term, sub):
     if term.is_atomic:
         return term
 
@@ -52,29 +53,52 @@ def instantiate_term(term, var_sub):
             instantiated_args.append(instantiate_term(arg, var_sub))
         
         return Term(term.name, instantiated_args)
+
+
+def suffix_variables(head, body, suffix):
     
+    for var in head.variables:
+        var.name += str(suffix)
     
+    for goal in body:
+        for var in goal.variables:
+            var.name += str(suffix)
+    
+    return
+
+
+# def simplify(sub):
+#     s
+
+
 def solve_goals(KB, goals, mgu={}):
     
     solved = False
     if goals:
         
-        goal = goals.pop()
+        goal = goals.pop(0)
         print(f"Solving goal: {goal}")
         
-        for head in KB:
-            new_mgu = match(goal, head, mgu)
+        # Search for matching clause heads
+        for i, head in enumerate(KB):
+            # suffix_variables(head, KB[head], i)
+            unifier = match(goal, head, mgu)
+            # unifier = simplify(unifier)
             
             # Check if match succeeded
-            if new_mgu is None:
+            if unifier is None:
                 continue
             
             else:
-                print(f"Goal {goal} matched head {head} under MGU: {new_mgu}")
+                # Reduction
+
+                print(f"Goal {goal} matched head {head} under unifier: {unifier}")
 
                 body = KB[head]
-                subgoals = [instantiate_term(subgoal, new_mgu) for subgoal in body[-1::-1]]
-                if solve_goals(KB, goals + subgoals, new_mgu):
+                updated_goals = body + goals
+                updated_goals = [apply_substitution(g, unifier) for g in updated_goals]
+                
+                if solve_goals(KB, updated_goals, unifier):
                     solved = True
 
     else:
