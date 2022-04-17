@@ -1,0 +1,21 @@
+<PROGRAM>
+<QUERY>
+        <PREDICATE name='append'>
+            <CONS>
+                <INTEGER>1</INTEGER>
+                <CONS>
+                    <INTEGER>2</INTEGER>
+                    <NIL/>
+                </CONS>
+            </CONS>
+            <CONS>
+                <INTEGER>3</INTEGER>
+                <CONS>
+                    <INTEGER>4</INTEGER>
+                    <NIL/>
+                </CONS>
+            </CONS>
+            <VARIABLE>C</VARIABLE>
+        </PREDICATE>
+    </QUERY>
+</PROGRAM>

@@ -48,7 +48,7 @@
             <VARIABLE>C</VARIABLE>
         </PREDICATE>
     </RULE>
-    <QUERY>
+    <!-- <QUERY>
         <PREDICATE name='append'>
             <CONS>
                 <INTEGER>1</INTEGER>
@@ -66,7 +66,7 @@
             </CONS>
             <VARIABLE>C</VARIABLE>
         </PREDICATE>
-    </QUERY>
+    </QUERY> -->
     <RULE>
         <PREDICATE name='parent'>
             <VARIABLE>P</VARIABLE>
