@@ -212,7 +212,14 @@ def solve_goals(kb, goals, mgu={}):
         
         goal = goals.pop(0)
 
+
         print(f"Solving goal:\n{goal}\n")
+
+        if goal.name == "not":
+            print(f"Checking unsolvability of {goal.args[0].name}")
+            return not solve_goals(kb, goal.args, mgu)
+
+            
         
         # Search for matching clause heads
         for i, head in enumerate(kb):

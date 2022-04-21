@@ -1,1 +1,32 @@
-append(A, B, [1|[2 | [3|[4|[]]]]])?
+
+# Simple-Fact
+
+# hasSibling(X, Y)?
+
+# Lists
+
+# append(A, B, [1|[2 | [3|[4|[]]]]])?
+#append([1|[2|[]]],[3|[4|[]]],C)?
+
+# Facts about Family
+
+# Functions
+
+# Addition
+
+# Cuts
+
+#power(3, 9)
+
+# !=
+
+# NOT, >
+
+#link(a,Y).
+#link(a,e).
+#route(a,Y).
+#route(a,e).
+#link(b,Y).
+#link(b,e). 
+
+hasBrother(jack, lucy)?
