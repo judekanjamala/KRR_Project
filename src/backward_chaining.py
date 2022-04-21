@@ -205,16 +205,12 @@ def refresh_variables(head, body):
     return head, refreshed_body
 
 
-def solve_goals(kb, goals, mgu={}, cut_area=False):
+def solve_goals(kb, goals, mgu={}):
     
     solved = False
     if goals:
         
         goal = goals.pop(0)
-
-        if goal.name == "cut":
-            cut_area = False
-            solve_goals(kb, goals, mgu, cut_area)
 
         print(f"Solving goal:\n{goal}\n")
         
@@ -240,10 +236,6 @@ def solve_goals(kb, goals, mgu={}, cut_area=False):
                     print(k,":", v)
                 print("\n")
 
-                for g in body:
-                    if g.name == "cut":
-                        cut_area = True
-
                 updated_goals = body + goals
                 updated_goals = [apply_substitution(g, unifier) for g in updated_goals]
                 
@@ -251,11 +243,9 @@ def solve_goals(kb, goals, mgu={}, cut_area=False):
                 for g in updated_goals:
                     print(g)
                 print("\n")
-                if solve_goals(kb, updated_goals, unifier, cut_area):
+                if solve_goals(kb, updated_goals, unifier):
                     solved = True
                 
-                    if cut_area:
-                        return solved
 
     else:
         print(f"MGU:\n")
