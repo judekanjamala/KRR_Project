@@ -48,7 +48,7 @@
             <VARIABLE>C</VARIABLE>
         </PREDICATE>
     </RULE>
-    <!-- <QUERY>
+    <QUERY>
         <PREDICATE name='append'>
             <CONS>
                 <INTEGER>1</INTEGER>
@@ -66,7 +66,7 @@
             </CONS>
             <VARIABLE>C</VARIABLE>
         </PREDICATE>
-    </QUERY> -->
+    </QUERY>
     <RULE>
         <PREDICATE name='parent'>
             <VARIABLE>P</VARIABLE>
@@ -435,5 +435,240 @@
                 <VARIABLE>N</VARIABLE>
             </PREDICATE>
         </NOT>
+    </RULE>
+    <RULE>
+        <PREDICATE name='route'>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </PREDICATE>
+        <PREDICATE name='link'>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </PREDICATE>
+    </RULE>
+    <RULE>
+        <PREDICATE name='route'>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Z</VARIABLE>
+        </PREDICATE>
+        <PREDICATE name='link'>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </PREDICATE>
+        <PREDICATE name='route'>
+            <VARIABLE>Y</VARIABLE>
+            <VARIABLE>Z</VARIABLE>
+        </PREDICATE>
+    </RULE>
+    <FACT>
+        <PREDICATE name='link'>
+            <CONSTANT>a</CONSTANT>
+            <CONSTANT>b</CONSTANT>
+        </PREDICATE>
+    </FACT>
+    <FACT>
+        <PREDICATE name='link'>
+            <CONSTANT>a</CONSTANT>
+            <CONSTANT>c</CONSTANT>
+        </PREDICATE>
+    </FACT>
+    <RULE>
+        <PREDICATE name='link'>
+            <CONSTANT>b</CONSTANT>
+            <VARIABLE>Y</VARIABLE>
+        </PREDICATE>
+        <NOT>
+            <PREDICATE name='link'>
+                <CONSTANT>a</CONSTANT>
+                <VARIABLE>Y</VARIABLE>
+            </PREDICATE>
+        </NOT>
+    </RULE>
+    <FACT>
+        <PREDICATE name='removeAll1'>
+            <VARIABLE>E</VARIABLE>
+            <NIL/>
+            <NIL/>
+        </PREDICATE>
+    </FACT>
+    <RULE>
+        <PREDICATE name='removeAll1'>
+            <VARIABLE>E</VARIABLE>
+            <CONS>
+                <VARIABLE>H</VARIABLE>
+                <VARIABLE>T</VARIABLE>
+            </CONS>
+            <VARIABLE>Zs</VARIABLE>
+        </PREDICATE>
+        <EQ>
+            <VARIABLE>E</VARIABLE>
+            <VARIABLE>H</VARIABLE>
+        </EQ>
+        <CUT/>
+        <PREDICATE name='removeAll1'>
+            <VARIABLE>E</VARIABLE>
+            <VARIABLE>T</VARIABLE>
+            <VARIABLE>Zs</VARIABLE>
+        </PREDICATE>
+    </RULE>
+    <RULE>
+        <PREDICATE name='removeAll1'>
+            <VARIABLE>E</VARIABLE>
+            <CONS>
+                <VARIABLE>H</VARIABLE>
+                <VARIABLE>T</VARIABLE>
+            </CONS>
+            <CONS>
+                <VARIABLE>H</VARIABLE>
+                <VARIABLE>Zs</VARIABLE>
+            </CONS>
+        </PREDICATE>
+        <PREDICATE name='removeAll1'>
+            <VARIABLE>E</VARIABLE>
+            <VARIABLE>T</VARIABLE>
+            <VARIABLE>Zs</VARIABLE>
+        </PREDICATE>
+    </RULE>
+    <FACT>
+        <PREDICATE name='removeAll2'>
+            <VARIABLE>E</VARIABLE>
+            <NIL/>
+            <NIL/>
+        </PREDICATE>
+    </FACT>
+    <RULE>
+        <PREDICATE name='removeAll2'>
+            <VARIABLE>E</VARIABLE>
+            <CONS>
+                <VARIABLE>H</VARIABLE>
+                <VARIABLE>T</VARIABLE>
+            </CONS>
+            <VARIABLE>Zs</VARIABLE>
+        </PREDICATE>
+        <EQ>
+            <VARIABLE>E</VARIABLE>
+            <VARIABLE>H</VARIABLE>
+        </EQ>
+        <CUT/>
+        <PREDICATE name='removeAll2'>
+            <VARIABLE>E</VARIABLE>
+            <VARIABLE>T</VARIABLE>
+            <VARIABLE>Zs</VARIABLE>
+        </PREDICATE>
+    </RULE>
+    <RULE>
+        <PREDICATE name='removeAll2'>
+            <VARIABLE>E</VARIABLE>
+            <CONS>
+                <VARIABLE>H</VARIABLE>
+                <VARIABLE>T</VARIABLE>
+            </CONS>
+            <CONS>
+                <VARIABLE>H</VARIABLE>
+                <VARIABLE>Zs</VARIABLE>
+            </CONS>
+        </PREDICATE>
+        <NE>
+            <VARIABLE>E</VARIABLE>
+            <VARIABLE>H</VARIABLE>
+        </NE>
+        <CUT/>
+        <PREDICATE name='removeAll2'>
+            <VARIABLE>E</VARIABLE>
+            <VARIABLE>T</VARIABLE>
+            <VARIABLE>Zs</VARIABLE>
+        </PREDICATE>
+    </RULE>
+    <FACT>
+        <PREDICATE name='removeAll1Uncut'>
+            <VARIABLE>E</VARIABLE>
+            <NIL/>
+            <NIL/>
+        </PREDICATE>
+    </FACT>
+    <RULE>
+        <PREDICATE name='removeAll1Uncut'>
+            <VARIABLE>E</VARIABLE>
+            <CONS>
+                <VARIABLE>H</VARIABLE>
+                <VARIABLE>T</VARIABLE>
+            </CONS>
+            <VARIABLE>Zs</VARIABLE>
+        </PREDICATE>
+        <EQ>
+            <VARIABLE>E</VARIABLE>
+            <VARIABLE>H</VARIABLE>
+        </EQ>
+        <PREDICATE name='removeAll1Uncut'>
+            <VARIABLE>E</VARIABLE>
+            <VARIABLE>T</VARIABLE>
+            <VARIABLE>Zs</VARIABLE>
+        </PREDICATE>
+    </RULE>
+    <RULE>
+        <PREDICATE name='removeAll1Uncut'>
+            <VARIABLE>E</VARIABLE>
+            <CONS>
+                <VARIABLE>H</VARIABLE>
+                <VARIABLE>T</VARIABLE>
+            </CONS>
+            <CONS>
+                <VARIABLE>H</VARIABLE>
+                <VARIABLE>Zs</VARIABLE>
+            </CONS>
+        </PREDICATE>
+        <PREDICATE name='removeAll1Uncut'>
+            <VARIABLE>E</VARIABLE>
+            <VARIABLE>T</VARIABLE>
+            <VARIABLE>Zs</VARIABLE>
+        </PREDICATE>
+    </RULE>
+    <FACT>
+        <PREDICATE name='removeAll2Uncut'>
+            <VARIABLE>E</VARIABLE>
+            <NIL/>
+            <NIL/>
+        </PREDICATE>
+    </FACT>
+    <RULE>
+        <PREDICATE name='removeAll2Uncut'>
+            <VARIABLE>E</VARIABLE>
+            <CONS>
+                <VARIABLE>H</VARIABLE>
+                <VARIABLE>T</VARIABLE>
+            </CONS>
+            <VARIABLE>Zs</VARIABLE>
+        </PREDICATE>
+        <EQ>
+            <VARIABLE>E</VARIABLE>
+            <VARIABLE>H</VARIABLE>
+        </EQ>
+        <PREDICATE name='removeAll2Uncut'>
+            <VARIABLE>E</VARIABLE>
+            <VARIABLE>T</VARIABLE>
+            <VARIABLE>Zs</VARIABLE>
+        </PREDICATE>
+    </RULE>
+    <RULE>
+        <PREDICATE name='removeAll2Uncut'>
+            <VARIABLE>E</VARIABLE>
+            <CONS>
+                <VARIABLE>H</VARIABLE>
+                <VARIABLE>T</VARIABLE>
+            </CONS>
+            <CONS>
+                <VARIABLE>H</VARIABLE>
+                <VARIABLE>Zs</VARIABLE>
+            </CONS>
+        </PREDICATE>
+        <NE>
+            <VARIABLE>E</VARIABLE>
+            <VARIABLE>H</VARIABLE>
+        </NE>
+        <PREDICATE name='removeAll2Uncut'>
+            <VARIABLE>E</VARIABLE>
+            <VARIABLE>T</VARIABLE>
+            <VARIABLE>Zs</VARIABLE>
+        </PREDICATE>
     </RULE>
 </PROGRAM>

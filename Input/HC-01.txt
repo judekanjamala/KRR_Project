@@ -135,7 +135,7 @@ removeAll1(E,[H|T],[H|Zs]) :- removeAll1(E,T,Zs).
 
 removeAll2(E,[],[]).
 removeAll2(E,[H|T],Zs) :- E = H, !, removeAll2(E,T,Zs).
-removeAll2(E,[H|T],[H|Zs]) :- E \= H, !, removeAll2(E,T,Zs).
+removeAll2(E,[H|T],[H|Zs]) :- E != H, !, removeAll2(E,T,Zs).
 
 removeAll1Uncut(E,[],[]).
 removeAll1Uncut(E,[H|T],Zs) :- E = H, removeAll1Uncut(E,T,Zs).
@@ -143,7 +143,7 @@ removeAll1Uncut(E,[H|T],[H|Zs]) :- removeAll1Uncut(E,T,Zs).
 
 removeAll2Uncut(E,[],[]).
 removeAll2Uncut(E,[H|T],Zs) :- E = H, removeAll2Uncut(E,T,Zs).
-removeAll2Uncut(E,[H|T],[H|Zs]) :- E \= H, removeAll2Uncut(E,T,Zs). 
+removeAll2Uncut(E,[H|T],[H|Zs]) :- E != H, removeAll2Uncut(E,T,Zs). 
 
 #----------------------------------------------------------
 # End
