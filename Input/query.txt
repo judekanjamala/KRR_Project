@@ -22,6 +22,9 @@
 
 # NOT, >
 
+#composite(6)?
+notRelated(X, Y)?
+
 #link(a,Y).
 #link(a,e).
 #route(a,Y).

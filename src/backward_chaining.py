@@ -6,6 +6,8 @@ from classes import CompoundTerm, VariableTerm
 # TODO
 # 1. simplify:  Add check for circularity in substitution.
 # 2. evaluate_term: handles integer numbers only.
+# 3. match: should return a fresh dictionary each time. 
+
 
 
 def match(term1, term2, unifier):

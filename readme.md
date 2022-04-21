@@ -1,5 +1,9 @@
 # README
 
+LOOK at notes for cut operator.
+
+LOOK at text for not operator.
+
 ## Workflow
 
 1. Place the input horn-clause text file inside *Input* folder.

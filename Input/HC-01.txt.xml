@@ -23,6 +23,24 @@
             <CONSTANT>lucy</CONSTANT>
         </PREDICATE>
     </FACT>
+    <RULE>
+        <PREDICATE name='notRelated'>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </PREDICATE>
+        <NOT>
+            <PREDICATE name='hasSibling'>
+                <VARIABLE>X</VARIABLE>
+                <VARIABLE>Y</VARIABLE>
+            </PREDICATE>
+        </NOT>
+        <NOT>
+            <PREDICATE name='hasSibling'>
+                <VARIABLE>Y</VARIABLE>
+                <VARIABLE>X</VARIABLE>
+            </PREDICATE>
+        </NOT>
+    </RULE>
     <FACT>
         <PREDICATE name='append'>
             <NIL/>
@@ -394,6 +412,11 @@
             <VARIABLE>X</VARIABLE>
         </PREDICATE>
     </RULE>
+    <FACT>
+        <PREDICATE name='prime'>
+            <INTEGER>7</INTEGER>
+        </PREDICATE>
+    </FACT>
     <RULE>
         <PREDICATE name='composite'>
             <VARIABLE>N</VARIABLE>

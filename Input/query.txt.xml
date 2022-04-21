@@ -1,1 +1,14 @@
-<PROGRAM/>
+<PROGRAM>
+    <QUERY>
+        <PREDICATE name='notRelated'>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </PREDICATE>
+    </QUERY>
+    <QUERY>
+        <PREDICATE name='hasBrother'>
+            <CONSTANT>jack</CONSTANT>
+            <CONSTANT>lucy</CONSTANT>
+        </PREDICATE>
+    </QUERY>
+</PROGRAM>
