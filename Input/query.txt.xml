@@ -1,6 +1,6 @@
 <PROGRAM>
     <QUERY>
-        <PREDICATE name='removeAll1'>
+        <PREDICATE name='removeAll1Uncut'>
             <INTEGER>2</INTEGER>
             <CONS>
                 <INTEGER>1</INTEGER>
