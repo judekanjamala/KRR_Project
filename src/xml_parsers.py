@@ -1,52 +1,26 @@
-from ast import Constant
+import sys
 import xml.etree.ElementTree as ET
 
-from classes import ConstantTerm, VariableTerm, CompoundTerm
+from classes import ConstantTerm, VariableTerm, FunctionTerm, PredicateTerm
+
+INBUILT_FUNCTIONS = {"CONS", "NEG", "ADD", "SUB", "MUL", "DIV", "MOD"}
+INBUILT_PREDICATES = {"LT", "LE", "EQ", "GE", "GT", "NE", "NOT", "FALSE", "TRUE", "CUT"}                     
+
+
 
 # TODO
 # 1. parse_predicate:
-#   1. Remove the variable collection code, instead relying on call by reference
-#       property. variable_terms will add a new entry whenever a new one is
-#       encountered and this will be retained when returning from the call.
+#    1. Remove the variable collection code, instead relying on call by reference
+#        property. variable_terms will add a new entry whenever a new one is
+#        encountered and this will be retained when returning from the call.
+#    2. Move FUNCTION PARSING to argument parsing part of parse_predicate.
+# 2. Differentiate between compound terms that are functions and predicates.
 
 
-def parse_predicate(predicate, variable_terms={}, clause_num=None):
-    
-    # print("VARIABLES", variable_terms)
-    variables = collect_variables(predicate)
+def parse_function(fn, variable_terms, clause_num):
 
-    for v in variables:
-        if v not in variable_terms:
-            variable_terms[v] = VariableTerm(v, clause_num)
-    
-    # print("VARIABLES AFTER COLLECTION", variable_terms)
-
-    if predicate.tag == "CONS":
-        predicate.attrib["name"] = "cons"
-
-    elif predicate.tag == "ADD":
-        predicate.attrib["name"] = "add"
-
-    elif predicate.tag == "EQ":
-        predicate.attrib["name"] = "eq"
-
-    elif predicate.tag == "FUNCTION":
-        predicate.attrib["name"] = "function"
-
-    elif predicate.tag == "CUT":
-        predicate.attrib["name"] = "cut"
-
-    elif predicate.tag == "NOT":
-        predicate.attrib["name"] = "not"
-
-    elif predicate.tag == "NE":
-        predicate.attrib["name"] = "ne"
-
-    elif predicate.tag == "GT":
-        predicate.attrib["name"] = "gt"
-    
     arg_terms = []
-    for arg in predicate:
+    for arg in fn:
         
         if arg.tag == "CONSTANT":
             arg_terms.append(ConstantTerm(val=arg.text))
@@ -61,14 +35,73 @@ def parse_predicate(predicate, variable_terms={}, clause_num=None):
         elif arg.tag == "NIL":
             arg_terms.append(ConstantTerm(val='nil'))
         
+        elif arg.tag in INBUILT_FUNCTIONS:
+            arg.attrib["name"] = arg.tag.lower()
+            arg_terms.append(parse_function(arg, variable_terms, clause_num))
+
+        elif arg.tag == "FUNCTION":
+            arg_terms.append(parse_function(arg, variable_terms, clause_num))
+
         else:
-            arg_terms.append(parse_predicate(arg, variable_terms, clause_num))
+            raise Exception(f"Unknown Arguement Type: ", arg.tag)
+            sys.exit(0)
 
     # print("CONSTRUCTING COMPOUNDTERM")
     # print(predicate.tag, predicate.attrib)
     # print(arg.tag,arg.text)
 
-    return CompoundTerm(name=predicate.attrib["name"], args=arg_terms)
+    return FunctionTerm(name=fn.attrib["name"], args=arg_terms)
+   
+
+def parse_predicate(predicate, variable_terms={}, clause_num=None):
+    
+    # print("VARIABLES", variable_terms)
+    variables = collect_variables(predicate)
+
+    for v in variables:
+        if v not in variable_terms:
+            variable_terms[v] = VariableTerm(v, clause_num)
+    
+    # print("VARIABLES AFTER COLLECTION", variable_terms)
+    if predicate.tag == "NOT":
+        arg, = predicate
+        return PredicateTerm("not", args=[parse_predicate(arg)])
+
+    elif predicate.tag in INBUILT_PREDICATES:
+        predicate.attrib["name"] = predicate.tag.lower()
+        
+    arg_terms = []
+    for arg in predicate:
+        
+        if arg.tag == "CONSTANT":
+            arg_terms.append(ConstantTerm(val=arg.text))
+        
+        elif arg.tag == "INTEGER":
+            arg_terms.append(ConstantTerm(val=int(arg.text)))
+        
+        elif arg.tag == "VARIABLE":
+            if arg.text in variable_terms:
+                arg_terms.append(variable_terms[arg.text])
+        
+        elif arg.tag == "NIL":
+            arg_terms.append(ConstantTerm(val='[]'))
+        
+        elif arg.tag in INBUILT_FUNCTIONS:
+            arg.attrib["name"] = arg.tag.lower()
+            arg_terms.append(parse_function(arg, variable_terms, clause_num))
+
+        elif arg.tag == "FUNCTION":
+            arg_terms.append(parse_function(arg, variable_terms, clause_num))
+
+        else:
+            raise Exception(f"Unknown Argument Type ", arg.tag, " in predicate ", predicate.attrib["name"])
+            sys.exit(0)
+
+    # print("CONSTRUCTING COMPOUNDTERM")
+    # print(predicate.tag, predicate.attrib)
+    # print(arg.tag,arg.text)
+
+    return PredicateTerm(name=predicate.attrib["name"], args=arg_terms)
 
 
 def collect_variables(predicate):
