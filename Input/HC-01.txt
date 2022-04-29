@@ -145,6 +145,45 @@ removeAll2Uncut(E,[],[]).
 removeAll2Uncut(E,[H|T],Zs) :- E = H, removeAll2Uncut(E,T,Zs).
 removeAll2Uncut(E,[H|T],[H|Zs]) :- E != H, removeAll2Uncut(E,T,Zs). 
 
+####### Testing Operators
+
+### Arithmetic Negation -
+
+neg1(Z, Y) :-  Y = -Z.
+
+### Arithmetic Binary Operators
+
+add1(X, Y, Z) :- Z = X + Y.
+subtract1(X, Y, Z) :- Z = X - Y.
+multiply1(X, Y, Z) :- Z = X * Y.
+divide1(X, Y, Z) :- Z = X / Y.
+modulus1(X, Y, Z) :- Z = X % Y.
+
+### Relational Binary Operators
+
+lt1(X, Y) :- X < Y.
+leq1(X, Y) :- X <= Y.
+eq1(X, Y) :- X = Y.
+geq1(X, Y) :- X >= Y.
+gt1(X, Y) :- X > Y.
+neq1(X, Y) :- X != Y.
+neq2(X, Y) :- X <> Y.
+lt2(X, Y) :- X lt Y.
+leq2(X, Y) :- X le Y.
+eq2(X, Y) :- X eq Y.
+geq2(X, Y) :- X ge Y.
+gt2(X, Y) :- X gt Y.
+neq3(X, Y) :- X ne Y.
+
+### Logical Unary Operators
+
+lt3(X, Y) :- ~ X ge Y.
+lt4(X, Y) :- not X ge Y.
+lt5(X, Y) :- \+ X ge Y.
+
+false1(X) :- false.
+true1(X) :- true.
+
 #----------------------------------------------------------
 # End
 #----------------------------------------------------------

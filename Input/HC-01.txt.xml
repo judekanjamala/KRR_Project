@@ -671,4 +671,264 @@
             <VARIABLE>Zs</VARIABLE>
         </PREDICATE>
     </RULE>
+    <RULE>
+        <PREDICATE name='neg1'>
+            <VARIABLE>Z</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </PREDICATE>
+        <EQ>
+            <VARIABLE>Y</VARIABLE>
+            <NEG>
+                <VARIABLE>Z</VARIABLE>
+            </NEG>
+        </EQ>
+    </RULE>
+    <RULE>
+        <PREDICATE name='add1'>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+            <VARIABLE>Z</VARIABLE>
+        </PREDICATE>
+        <EQ>
+            <VARIABLE>Z</VARIABLE>
+            <ADD>
+                <VARIABLE>X</VARIABLE>
+                <VARIABLE>Y</VARIABLE>
+            </ADD>
+        </EQ>
+    </RULE>
+    <RULE>
+        <PREDICATE name='subtract1'>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+            <VARIABLE>Z</VARIABLE>
+        </PREDICATE>
+        <EQ>
+            <VARIABLE>Z</VARIABLE>
+            <SUB>
+                <VARIABLE>X</VARIABLE>
+                <VARIABLE>Y</VARIABLE>
+            </SUB>
+        </EQ>
+    </RULE>
+    <RULE>
+        <PREDICATE name='multiply1'>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+            <VARIABLE>Z</VARIABLE>
+        </PREDICATE>
+        <EQ>
+            <VARIABLE>Z</VARIABLE>
+            <MUL>
+                <VARIABLE>X</VARIABLE>
+                <VARIABLE>Y</VARIABLE>
+            </MUL>
+        </EQ>
+    </RULE>
+    <RULE>
+        <PREDICATE name='divide1'>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+            <VARIABLE>Z</VARIABLE>
+        </PREDICATE>
+        <EQ>
+            <VARIABLE>Z</VARIABLE>
+            <DIV>
+                <VARIABLE>X</VARIABLE>
+                <VARIABLE>Y</VARIABLE>
+            </DIV>
+        </EQ>
+    </RULE>
+    <RULE>
+        <PREDICATE name='modulus1'>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+            <VARIABLE>Z</VARIABLE>
+        </PREDICATE>
+        <EQ>
+            <VARIABLE>Z</VARIABLE>
+            <MOD>
+                <VARIABLE>X</VARIABLE>
+                <VARIABLE>Y</VARIABLE>
+            </MOD>
+        </EQ>
+    </RULE>
+    <RULE>
+        <PREDICATE name='lt1'>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </PREDICATE>
+        <LT>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </LT>
+    </RULE>
+    <RULE>
+        <PREDICATE name='leq1'>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </PREDICATE>
+        <LE>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </LE>
+    </RULE>
+    <RULE>
+        <PREDICATE name='eq1'>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </PREDICATE>
+        <EQ>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </EQ>
+    </RULE>
+    <RULE>
+        <PREDICATE name='geq1'>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </PREDICATE>
+        <GE>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </GE>
+    </RULE>
+    <RULE>
+        <PREDICATE name='gt1'>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </PREDICATE>
+        <GT>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </GT>
+    </RULE>
+    <RULE>
+        <PREDICATE name='neq1'>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </PREDICATE>
+        <NE>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </NE>
+    </RULE>
+    <RULE>
+        <PREDICATE name='neq2'>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </PREDICATE>
+        <NE>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </NE>
+    </RULE>
+    <RULE>
+        <PREDICATE name='lt2'>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </PREDICATE>
+        <LT>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </LT>
+    </RULE>
+    <RULE>
+        <PREDICATE name='leq2'>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </PREDICATE>
+        <LE>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </LE>
+    </RULE>
+    <RULE>
+        <PREDICATE name='eq2'>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </PREDICATE>
+        <EQ>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </EQ>
+    </RULE>
+    <RULE>
+        <PREDICATE name='geq2'>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </PREDICATE>
+        <GE>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </GE>
+    </RULE>
+    <RULE>
+        <PREDICATE name='gt2'>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </PREDICATE>
+        <GT>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </GT>
+    </RULE>
+    <RULE>
+        <PREDICATE name='neq3'>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </PREDICATE>
+        <NE>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </NE>
+    </RULE>
+    <RULE>
+        <PREDICATE name='lt3'>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </PREDICATE>
+        <NOT>
+            <GE>
+                <VARIABLE>X</VARIABLE>
+                <VARIABLE>Y</VARIABLE>
+            </GE>
+        </NOT>
+    </RULE>
+    <RULE>
+        <PREDICATE name='lt4'>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </PREDICATE>
+        <NOT>
+            <GE>
+                <VARIABLE>X</VARIABLE>
+                <VARIABLE>Y</VARIABLE>
+            </GE>
+        </NOT>
+    </RULE>
+    <RULE>
+        <PREDICATE name='lt5'>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
+        </PREDICATE>
+        <NOT>
+            <GE>
+                <VARIABLE>X</VARIABLE>
+                <VARIABLE>Y</VARIABLE>
+            </GE>
+        </NOT>
+    </RULE>
+    <RULE>
+        <PREDICATE name='false1'>
+            <VARIABLE>X</VARIABLE>
+        </PREDICATE>
+        <FALSE/>
+    </RULE>
+    <RULE>
+        <PREDICATE name='true1'>
+            <VARIABLE>X</VARIABLE>
+        </PREDICATE>
+        <TRUE/>
+    </RULE>
 </PROGRAM>
