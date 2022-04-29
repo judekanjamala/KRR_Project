@@ -1,21 +1,21 @@
 <PROGRAM>
     <QUERY>
-        <PREDICATE name='append'>
-            <VARIABLE>A</VARIABLE>
-            <VARIABLE>B</VARIABLE>
+        <PREDICATE name='removeAll1'>
+            <INTEGER>2</INTEGER>
             <CONS>
                 <INTEGER>1</INTEGER>
                 <CONS>
                     <INTEGER>2</INTEGER>
                     <CONS>
-                        <INTEGER>3</INTEGER>
+                        <INTEGER>2</INTEGER>
                         <CONS>
-                            <INTEGER>4</INTEGER>
+                            <INTEGER>3</INTEGER>
                             <NIL/>
                         </CONS>
                     </CONS>
                 </CONS>
             </CONS>
+            <VARIABLE>Z</VARIABLE>
         </PREDICATE>
     </QUERY>
 </PROGRAM>
