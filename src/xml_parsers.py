@@ -6,7 +6,8 @@ from classes import ConstantTerm, VariableTerm, FunctionTerm, PredicateTerm
 INBUILT_FUNCTIONS = {"CONS", "NEG", "ADD", "SUB", "MUL", "DIV", "MOD"}
 INBUILT_PREDICATES = {"LT", "LE", "EQ", "GE", "GT", "NE", "NOT", "FALSE", "TRUE", "CUT"}                     
 
-
+INBUILT_PREDICATES_LOWER = {s.lower() for s in INBUILT_PREDICATES}
+INBUILT_FUNCTIONS_LOWER = {s.lower() for s in INBUILT_FUNCTIONS}
 
 # TODO
 # 1. parse_predicate:
@@ -33,7 +34,7 @@ def parse_function(fn, variable_terms, clause_num):
                 arg_terms.append(variable_terms[arg.text])
         
         elif arg.tag == "NIL":
-            arg_terms.append(ConstantTerm(val='nil'))
+            arg_terms.append(ConstantTerm(val='[]'))
         
         elif arg.tag in INBUILT_FUNCTIONS:
             arg.attrib["name"] = arg.tag.lower()

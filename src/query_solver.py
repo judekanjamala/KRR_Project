@@ -5,6 +5,7 @@ import sys
 from xml_parsers import parse_KB, parse_query
 from backward_chaining import solve_goals
 
+
 sys.path.append("/home/jude/Mtech/Sem_2/KRR/Project/src")
 
 parser = argparse.ArgumentParser()
@@ -18,7 +19,6 @@ parser.add_argument('-q', '--query',
                      required=True)
 
 args = parser.parse_args()
-
 
 
 def main():

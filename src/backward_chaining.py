@@ -1,7 +1,10 @@
 # from turtle import update
 import sys
+from copy import deepcopy
 
 from classes import CompoundTerm, VariableTerm
+from xml_parsers import INBUILT_FUNCTIONS, INBUILT_PREDICATES_LOWER
+
 
 # TODO
 # 1. simplify:  Add check for circularity in substitution.
@@ -96,7 +99,7 @@ def suffix_variables(head, body, suffix):
 def evaluate_term(term):
 
     if term.is_constant:
-        if term.val == "nil":
+        if term.val == "[]":
             return []
         
         else:
@@ -108,6 +111,7 @@ def evaluate_term(term):
     elif term.is_compound:
         if term.name == "cons":
             head = evaluate_term(term.args[0])
+
             return [head] + evaluate_term(term.args[1])
 
         elif term.name == "add":
@@ -157,15 +161,16 @@ def evaluate_term(term):
 
 
 
-def simplify(term, sub, visited=set()):
-
+def simplify(term, sub,visited=set()):
+    
     if term.is_constant:
         return term
     
     elif term.is_variable:
+
         if term in sub:
-            # visited.add(term)
-            return simplify(sub[term], sub)
+            sub[term] = simplify(sub[term], sub)
+            return sub[term]
         else:
             return term
         
@@ -205,47 +210,105 @@ def refresh_variables(head, body):
     return head, refreshed_body
 
 
-def solve_goals(kb, goals, mgu={}):
+def evaluate_builtin_predicate(predicate, mgu):
+    
+    arg1, arg2,  = map(evaluate_term,  predicate.args)
+    
+    if predicate.name == " true":
+        return True
+    elif predicate.name == "false":
+        return False
+    elif predicate.name == "not":
+        raise NotImplementedError
+    elif predicate.name == "cut":
+        raise NotImplementedError
+    elif predicate.name == "lt":
+        return arg1 < arg2
+    elif predicate.name == "le":
+        return arg1 <= arg2
+    
+    elif predicate.name == "eq":
+        return arg1 == arg2
+    elif predicate.name == "gt":
+        return arg1 > arg2
+    elif predicate.name == "ge":
+        return arg1 >= arg2
+    elif predicate.name == "ne":
+        return arg1 != arg2
+    else:
+        raise NotImplementedError
+
+
+def solve_goals(kb, goals, mgu={}, cut_scope=False, depth=0):
     
     solved = False
     if goals:
         
-        goal = goals.pop(0)
+        goal = goals[0]
 
-        print(f"Solving goal:\n{goal}\n")
+        print(f"Depth: {depth}\nSolving goal: {goal}")
+
+        if goal.name == "cut":
+            solve_goals(kb, goals[1:], mgu, False, depth + 1)
+            return True
         
+        if goal.name in INBUILT_PREDICATES_LOWER:
+            if evaluate_builtin_predicate(goal, mgu):
+                return solve_goals(kb, goals[1:], mgu, cut_scope, depth + 1)
+            else:
+                print("Returned False!\n")
+                return False
+
         # Search for matching clause heads
         for i, head in enumerate(kb):
 
+            if solved and cut_scope:
+                break
+
             # suffix_variables(head, kb[head], i)
             head, body = refresh_variables(head, kb[head])
-            unifier = match(goal, head, mgu)
+            
+            # print("Matching Goal with:", head)
+            unifier = match(goal, head, deepcopy(mgu))
                 
 
             # unifier = simplify(unifier)
             
             # Check if match succeeded
             if unifier is None:
+                # print("Failed matching.")
                 continue
             
             else:
                 # Reduction
+                print(f"Depth: {depth}\ngoal: {goal}\nmatch: {head}")
 
-                print(f"Head:\n{head}\n\nUnifier:")
+                print(f"Unifier:")
                 for k, v in unifier.items():
                     print(k,":", v)
                 print("\n")
 
-                updated_goals = body + goals
+                for g in body:
+                    if g.name == "cut":
+                        cut_scope = True
+                        
+
+                updated_goals = body + goals[1:]
                 updated_goals = [apply_substitution(g, unifier) for g in updated_goals]
                 
-                print("NEW GOALS:")
-                for g in updated_goals:
-                    print(g)
+                if updated_goals:
+                    print("NEW GOALS:")
+                    for g in updated_goals:
+                        print(g)
+                else:
+                    print("All Goals Solved!!")
                 print("\n")
-                if solve_goals(kb, updated_goals, unifier):
+                if solve_goals(kb, updated_goals, unifier, cut_scope, depth + 1):
                     solved = True
-                
+        
+        if not solved:
+            print("Failed to match Goal!")
+
 
     else:
         print(f"MGU:\n")
@@ -267,7 +330,7 @@ def solve_goals(kb, goals, mgu={}):
 
         explore_more = input("Enter c to look for more solutions:").lower()
         if explore_more == "c":
-            solved = False
+            solved = True
         else:
             sys.exit(0)
 

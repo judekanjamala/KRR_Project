@@ -46,7 +46,7 @@ class VariableTerm(Term):
         self.id = self.__class__.count
 
     def __str__(self) -> str:
-        return f"{self.name}"
+        return f"{self.name}{self.id}"
     
     def __repr__(self) -> str:
         return f"VariableTerm(name={self.name}, clause={self.clause}, id={self.id})"
