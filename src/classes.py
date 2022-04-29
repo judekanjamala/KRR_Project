@@ -49,7 +49,7 @@ class VariableTerm(Term):
         return f"{self.name}{self.id}"
     
     def __repr__(self) -> str:
-        return f"VariableTerm(name={self.name}, clause={self.clause}, id={self.id})"
+        return f"VariableTerm(name={self.name}, clause={self.clause})"
 
     def __hash__(self):
         return hash((self.name, self.clause, self.id))
@@ -107,6 +107,9 @@ class FunctionTerm(CompoundTerm):
 
         self.is_function = True
 
+    def __repr__(self) -> str:
+        return f"FunctionTerm(name={self.name}, args={self.args})"
+
 
 class PredicateTerm(CompoundTerm):
 
@@ -114,3 +117,6 @@ class PredicateTerm(CompoundTerm):
         super().__init__(name, args)
 
         self.is_predicate = True
+
+    def __repr__(self) -> str:
+        return f"PredicateTerm(name={self.name}, args={self.args})"

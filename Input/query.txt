@@ -1,1 +1,7 @@
-removeAll1Uncut(2, [1|[2|[2|[3 | []]]]], Z)?
+# removeAll1Uncut(2, [1|[2|[2|[3 | []]]]], Z)?
+
+# add1(3, 4, Z)?
+
+# modulus1(4, 3, Z)?
+
+link(X, Y)?

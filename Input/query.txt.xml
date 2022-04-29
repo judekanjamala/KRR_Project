@@ -1,21 +1,8 @@
 <PROGRAM>
     <QUERY>
-        <PREDICATE name='removeAll1Uncut'>
-            <INTEGER>2</INTEGER>
-            <CONS>
-                <INTEGER>1</INTEGER>
-                <CONS>
-                    <INTEGER>2</INTEGER>
-                    <CONS>
-                        <INTEGER>2</INTEGER>
-                        <CONS>
-                            <INTEGER>3</INTEGER>
-                            <NIL/>
-                        </CONS>
-                    </CONS>
-                </CONS>
-            </CONS>
-            <VARIABLE>Z</VARIABLE>
+        <PREDICATE name='link'>
+            <VARIABLE>X</VARIABLE>
+            <VARIABLE>Y</VARIABLE>
         </PREDICATE>
     </QUERY>
 </PROGRAM>

@@ -60,9 +60,9 @@ fib(N+2,W) :- fib(N,U), fib(N+1,V), U + V = W.
 # Fibonacci using succesor function and plus predicate
 #----------------------------------------------------------
 
-fib(0,1).
-fib(1,1).
-fib(s(s(N)),V) :- fib(N,V1), fib(s(N),V2), plus(V1,V2,V).
+#fib(0,1).
+#fib(1,1).
+#fib(s(s(N)),V) :- fib(N,V1), fib(s(N),V2), plus(V1,V2,V).
 
 #----------------------------------------------------------
 # plus(A,B,C) means A + B = C,

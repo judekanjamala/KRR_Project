@@ -1,5 +1,6 @@
 import argparse
 import sys
+from classes import PredicateTerm, VariableTerm
 
 
 from xml_parsers import parse_KB, parse_query
@@ -25,9 +26,9 @@ def main():
     
     kb = parse_KB(args.kb)
     # for key, val in kb.items():
-    #     print(key,":")
+    #     print(repr(key),":")
     #     for v in val:
-    #         print("\t", v)
+    #         print("\t", repr(v))
         
     #     print("\n")
 
@@ -36,13 +37,31 @@ def main():
     query = parse_query(args.query)
     print("FINISHED PARSING QUERY")
 
+
+
     print("Query:")
     for goal in query:
         print(goal)
 
     print("\n")
 
+    kb = add_builtin_predicates(kb)
+
     print(solve_goals(kb, query))
+
+
+def add_builtin_predicates(kb):
+    num_clauses = len(kb)
+
+    num_clauses += 1
+
+    # Adding clause for eq predicate
+    arg = VariableTerm(name='X', clause=num_clauses)
+    head = PredicateTerm(name="eq", args=[arg, arg])
+    kb[head] = []
+
+    return kb
+
 
 
 if __name__ == "__main__":

@@ -8,6 +8,7 @@ INBUILT_PREDICATES = {"LT", "LE", "EQ", "GE", "GT", "NE", "NOT", "FALSE", "TRUE"
 
 INBUILT_PREDICATES_LOWER = {s.lower() for s in INBUILT_PREDICATES}
 INBUILT_FUNCTIONS_LOWER = {s.lower() for s in INBUILT_FUNCTIONS}
+INBUILT_PREDICATES_LOWER.remove("eq")
 
 # TODO
 # 1. parse_predicate:
