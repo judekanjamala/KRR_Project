@@ -29,8 +29,7 @@ class ConstantTerm(Term):
         return self.val == other.val
 
     def __ne__(self, other):
-        # Not strictly necessary, but to avoid having both x==y and x!=y
-        # True at the same time
+
         return not(self == other)
 
 class VariableTerm(Term):
@@ -58,8 +57,7 @@ class VariableTerm(Term):
         return (self.name, self.clause, self.id) == (other.name, other.clause, other.id)
 
     def __ne__(self, other):
-        # Not strictly necessary, but to avoid having both x==y and x!=y
-        # True at the same time
+
         return not(self == other)
 
 class CompoundTerm(Term):
@@ -96,8 +94,7 @@ class CompoundTerm(Term):
         return (self.name, self.args) == (other.name, other.args)
 
     def __ne__(self, other):
-        # Not strictly necessary, but to avoid having both x==y and x!=y
-        # True at the same time
+
         return not(self == other)
 
 class FunctionTerm(CompoundTerm):

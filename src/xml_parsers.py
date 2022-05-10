@@ -20,7 +20,19 @@ INBUILT_PREDICATES_LOWER.remove("eq")
 
 
 def parse_function(fn, variable_terms, clause_num):
+    '''
+    parse_function parses a function xml element into a FunctionTerm Object.
 
+    Args:
+    1. fn: xml-element
+    2. variable_terms: Dictionary {variable-name:: VariableTerm}
+    3. clause_num: clause in which function is present.
+
+    Returns:
+    1. FunctionTerm
+    '''
+
+    # Parse arguments to function
     arg_terms = []
     for arg in fn:
         
@@ -45,7 +57,7 @@ def parse_function(fn, variable_terms, clause_num):
             arg_terms.append(parse_function(arg, variable_terms, clause_num))
 
         else:
-            raise Exception(f"Unknown Arguement Type: ", arg.tag)
+            raise Exception(f"Unknown Argument Type: ", arg.tag)
             sys.exit(0)
 
     # print("CONSTRUCTING COMPOUNDTERM")
@@ -56,7 +68,19 @@ def parse_function(fn, variable_terms, clause_num):
    
 
 def parse_predicate(predicate, variable_terms={}, clause_num=None):
+    '''
+    parse_predicate parses a predicate xml element into a PredicateTerm Object.
+
+    Args:
+    1. predicate: xml-element
+    2. variable_terms: Dictionary {variable-name:: VariableTerm}
+    3. clause_num: clause in which function is present.
+
+    Returns:
+    1. PredicateTerm
+    '''
     
+    # Collect all unique variables in the predicate.
     # print("VARIABLES", variable_terms)
     variables = collect_variables(predicate)
 
@@ -64,6 +88,7 @@ def parse_predicate(predicate, variable_terms={}, clause_num=None):
         if v not in variable_terms:
             variable_terms[v] = VariableTerm(v, clause_num)
     
+    # Capture predicate name
     # print("VARIABLES AFTER COLLECTION", variable_terms)
     if predicate.tag == "NOT":
         arg, = predicate
@@ -72,6 +97,7 @@ def parse_predicate(predicate, variable_terms={}, clause_num=None):
     elif predicate.tag in INBUILT_PREDICATES:
         predicate.attrib["name"] = predicate.tag.lower()
         
+    # Parse arguments to predicate
     arg_terms = []
     for arg in predicate:
         
@@ -107,6 +133,15 @@ def parse_predicate(predicate, variable_terms={}, clause_num=None):
 
 
 def collect_variables(predicate):
+    '''
+    Collect all variable names present in the predicate.
+
+    Args:
+    1. predicate: Predicate XML element.
+
+    Returns:
+    1. variables: A set, {variable-names}
+    '''
 
     # print("COLLECTING VARIABLES")
     variables = set()
@@ -118,6 +153,17 @@ def collect_variables(predicate):
 
 
 def parse_rule(rule, count):
+    '''
+    parse_rule parses rule XML element into a head PredicateTerm and body, a list of 
+    PredicateTerms.
+
+    Args:
+    1. rule: Rule XML element.
+    2. count: Serial number of the rule being processed.
+
+    Returns:
+    1. (head, body) 
+    '''
 
     # print("PARSING RULE")
 
@@ -143,9 +189,19 @@ def parse_rule(rule, count):
 
 
 def parse_KB(file):
+    '''
+    parse_KB takes an XML file containing the clause elements and parses into a 
+    dictionary clauses having keys as heads of the clauses and values as body of the 
+    clause. Facts have no bodies and are denoted by empty lists.
+
+    Args:
+    1.file: XML file (there should not be any queries in the KB file)
+
+    Returns:
+    1. kb: {PredicateTerm: [PredicateTerms]}
+    '''
 
     tree = ET.parse(file)
-
     program = tree.getroot()
 
     kb = {}
@@ -165,6 +221,18 @@ def parse_KB(file):
 
 
 def parse_query(file):
+    '''
+    It parses an XML file containing a query into a list of PredicateTerms. It 
+    reuses parse_rule function to parse the query XML element and is called with a 
+    special count value of q to mark the predicates as being queries.
+
+    Args:
+    1. file: An XML file containing query.
+
+    Returns:
+    1. goals: A list of PredicateTerms
+    '''
+
     tree = ET.parse(file)
 
     query = tree.getroot()[0]

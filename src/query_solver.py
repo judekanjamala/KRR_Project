@@ -23,6 +23,9 @@ args = parser.parse_args()
 
 
 def main():
+    '''
+    Driver function converts xml data into kb, query objects. Runs backward reasoning to answer query and outputs the result.
+    '''
     
     kb = parse_KB(args.kb)
     # for key, val in kb.items():
@@ -51,6 +54,16 @@ def main():
 
 
 def add_builtin_predicates(kb):
+    '''
+    Add clauses defining eq predicate to the kb.
+
+    Args:
+    1. kb: a dictionary of clauses (head, body).
+
+    Returns:
+    1. kb: 
+    '''
+
     num_clauses = len(kb)
 
     num_clauses += 1

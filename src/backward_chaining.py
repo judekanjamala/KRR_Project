@@ -11,6 +11,23 @@ from utils import evaluate_builtin_predicate, evaluate_term, refresh_variables, 
 
 
 def solve_goals(kb, goals, mgu={}, cut_scope=False, depth=0):
+
+    '''
+    Perform backward chaining by repeatedly popping head from goals and trying to 
+    match it with a clause in the KB. If a match is found then the resulting 
+    substitution is applied on the rest of the subgoals in body and the body is 
+    prepended to goals. solve_goals is recursively called again on the updated goals.
+
+    Args:
+    1. kb: A dictionary {PredicateTerm : [PredicateTerm]}.
+    2. goals: [PredicateTerm]
+    3. mgu: {VariableTerm: Term}
+    4. cut_scope: True if solve goals has gone past cut and false otherwise.
+    5. depth: Depth of the chaining interms of clauses matched.
+
+    Returns:
+    1. solver: True
+    '''
     
     solved = False
     if goals:
@@ -19,16 +36,19 @@ def solve_goals(kb, goals, mgu={}, cut_scope=False, depth=0):
 
         print(f"Depth: {depth}\nSolving goal: {goal}")
 
+        # Solve for cut predicate
         if goal.name == "cut":
             solve_goals(kb, goals[1:], mgu, False, depth + 1)
             return True
         
+        # Solve for not predicate
         if goal.name == "not":
             if not solve_goals(kb, goal.args, mgu, cut_scope, depth + 1):
                 return solve_goals(kb, goals[1:], mgu, cut_scope, depth + 1)
             else:
                 return False
         
+        # Solve for other inbuilt predicates
         if goal.name in INBUILT_PREDICATES_LOWER:
             if evaluate_builtin_predicate(goal, mgu):
                 return solve_goals(kb, goals[1:], mgu, cut_scope, depth + 1)
@@ -36,6 +56,7 @@ def solve_goals(kb, goals, mgu={}, cut_scope=False, depth=0):
                 print("Returned False!\n")
                 return False
 
+        # Solve for user-defined predicates
         # Search for matching clause heads
         for i, head in enumerate(kb):
 

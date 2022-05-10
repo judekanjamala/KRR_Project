@@ -1,6 +1,19 @@
 
 
 def match(term1, term2, unifier={}):
+
+    '''
+    match tries to match term1 and term2.
+
+    Args:
+    1. term1: Term
+    2. term2: Term
+    3. unifier: {VariableTerm: Term}
+
+    Returns:
+    1. unifier: {VariableTerm: Term} if match succeed, None otherwise.
+
+    '''
     
     if term1.is_constant and term2.is_constant:
         if term1.val == term2.val:
@@ -33,6 +46,19 @@ def match(term1, term2, unifier={}):
 
 
 def var_match(var_term, term2, unifier):
+    '''
+    var_match matches var_term with term2 using unifier.
+
+    Args:
+    1. var_term: VariableTerm
+    2. term2: Term
+    3. unifier: {VariableTerm: Term}
+
+
+    Returns:
+    1. unifier: {VariableTerm: Term} if match succeed, None otherwise.
+    '''
+
     if term2.is_compound and var_term in term2.variables:
         return None
 
