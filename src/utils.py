@@ -60,7 +60,7 @@ def replace_variables(term, sub):
         return CompoundTerm(term.name, args)
 
 
-def refresh_variables(head, body):
+def copy_clause(head, body):
     '''
     It takes a clause head and body and generates duplicate of the clause having
     fresh variables for matching purposes during backward chaining.

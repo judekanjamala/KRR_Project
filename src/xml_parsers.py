@@ -1,6 +1,6 @@
 import sys
 import xml.etree.ElementTree as ET
-
+from utils import trace_file
 from classes import ConstantTerm, VariableTerm, FunctionTerm, PredicateTerm
 
 INBUILT_FUNCTIONS = {"CONS", "NEG", "ADD", "SUB", "MUL", "DIV", "MOD"}
@@ -92,7 +92,8 @@ def parse_predicate(predicate, variable_terms={}, clause_num=None):
     # print("VARIABLES AFTER COLLECTION", variable_terms)
     if predicate.tag == "NOT":
         arg, = predicate
-        return PredicateTerm("not", args=[parse_predicate(arg)])
+        arg = parse_predicate(arg, variable_terms, clause_num)
+        return PredicateTerm("not", args=[arg])
 
     elif predicate.tag in INBUILT_PREDICATES:
         predicate.attrib["name"] = predicate.tag.lower()
@@ -175,7 +176,6 @@ def parse_rule(rule, count):
     for v in variables:
         variable_terms[v] = VariableTerm(v, count)
     
-    # print(f"VARIABLES:", variable_terms)
     
     # print("PARSING HEAD")
     head = parse_predicate(rule[0], variable_terms, count)
@@ -216,6 +216,12 @@ def parse_KB(file):
         elif clause.tag == "RULE":
             head, body = parse_rule(clause, i)
             kb[head] = body
+            # print("Rule parsed:", file=trace_file)
+            # body_s = ""
+            # for g in kb[head]:
+            #     body_s += str(g) + ", "
+
+            # print(f"{head}:-{body_s}", file=trace_file)
         
     return kb
 

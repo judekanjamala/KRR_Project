@@ -81,7 +81,7 @@ class CompoundTerm(Term):
     def __str__(self) -> str:
         args = f""
         for arg in self.args:
-            args += f"{arg}, "
+            args += f"{str(arg)}, "
         return f"{self.name}({args[:-2]})"
 
     def __repr__(self) -> str:

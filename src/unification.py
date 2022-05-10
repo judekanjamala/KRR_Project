@@ -14,7 +14,7 @@ def match(term1, term2, unifier={}):
     1. unifier: {VariableTerm: Term} if match succeed, None otherwise.
 
     '''
-    
+    # print(unifier)
     if term1.is_constant and term2.is_constant:
         if term1.val == term2.val:
             return unifier
@@ -62,7 +62,7 @@ def var_match(var_term, term2, unifier):
     if term2.is_compound and var_term in term2.variables:
         return None
 
-    elif var_term.name in unifier:
+    elif var_term in unifier:
         return match(unifier[var_term], term2, unifier)
     
     else:
