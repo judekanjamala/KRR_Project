@@ -2,10 +2,9 @@ import argparse
 import sys
 from classes import PredicateTerm, VariableTerm
 
-
 from xml_parsers import parse_KB, parse_query
 from backward_chaining import solve_goals
-
+from utils import trace_file
 
 sys.path.append("/home/jude/Mtech/Sem_2/KRR/Project/src")
 
@@ -35,22 +34,25 @@ def main():
         
     #     print("\n")
 
-    print("FINISHED PARSING KB")
+    print("FINISHED PARSING KB", file=trace_file)
 
     query = parse_query(args.query)
-    print("FINISHED PARSING QUERY")
+    print("FINISHED PARSING QUERY", file=trace_file)
 
 
 
-    print("Query:")
+    s = ("Query:\n")
     for goal in query:
-        print(goal)
+        s += str(goal) + "\n"
 
-    print("\n")
+    print(f"{s}\n", file=trace_file)
+    print(f"{s}\n")
 
     kb = add_builtin_predicates(kb)
 
-    print(solve_goals(kb, query))
+    result = solve_goals(kb, query)
+    print(result)
+    print(result, file=trace_file)
 
 
 def add_builtin_predicates(kb):
@@ -76,6 +78,7 @@ def add_builtin_predicates(kb):
     return kb
 
 
-
 if __name__ == "__main__":
     main()
+
+trace_file.close()

@@ -1,10 +1,11 @@
 # from turtle import update
+from inspect import trace
 import sys
 from copy import deepcopy
 
 from xml_parsers import INBUILT_PREDICATES_LOWER
 from unification import match
-from utils import evaluate_builtin_predicate, evaluate_term, refresh_variables, simplify, apply_substitution
+from utils import evaluate_builtin_predicate, evaluate_term, refresh_variables, simplify, apply_substitution, trace_file
 
 # TODO
 # 1. simplify:  Add check for circularity in substitution.
@@ -34,7 +35,7 @@ def solve_goals(kb, goals, mgu={}, cut_scope=False, depth=0):
         
         goal = goals[0]
 
-        print(f"Depth: {depth}\nSolving goal: {goal}")
+        print(f"Depth: {depth}\nSolving goal: {goal}", file=trace_file)
 
         # Solve for cut predicate
         if goal.name == "cut":
@@ -42,18 +43,19 @@ def solve_goals(kb, goals, mgu={}, cut_scope=False, depth=0):
             return True
         
         # Solve for not predicate
-        if goal.name == "not":
+        elif goal.name == "not":
             if not solve_goals(kb, goal.args, mgu, cut_scope, depth + 1):
                 return solve_goals(kb, goals[1:], mgu, cut_scope, depth + 1)
             else:
                 return False
         
-        # Solve for other inbuilt predicates
-        if goal.name in INBUILT_PREDICATES_LOWER:
-            if evaluate_builtin_predicate(goal, mgu):
+        # Solve for other inbuilt predicates. The arguments of the predicates must
+        # already be ground terms.
+        elif goal.name in INBUILT_PREDICATES_LOWER:
+            if evaluate_builtin_predicate(goal):
                 return solve_goals(kb, goals[1:], mgu, cut_scope, depth + 1)
             else:
-                print("Returned False!\n")
+                print("Returned False!\n", file=trace_file)
                 return False
 
         # Solve for user-defined predicates
@@ -69,9 +71,6 @@ def solve_goals(kb, goals, mgu={}, cut_scope=False, depth=0):
             # print("Matching Goal with:", head)
             unifier = match(goal, head, deepcopy(mgu))
                 
-
-            # unifier = simplify(unifier)
-            
             # Check if match succeeded
             if unifier is None:
                 # print("Failed matching.")
@@ -79,12 +78,12 @@ def solve_goals(kb, goals, mgu={}, cut_scope=False, depth=0):
             
             else:
                 # Reduction
-                print(f"Depth: {depth}\ngoal: {goal}\nmatch: {head}")
+                print(f"Depth: {depth}\ngoal: {goal}\nmatch: {head}", file=trace_file)
 
-                print(f"Unifier:")
+                s = (f"Unifier:\n")
                 for k, v in unifier.items():
-                    print(k,":", v)
-                print("\n")
+                    s += f"{k} :{v}\n"
+                print(f"{s}\n", file=trace_file)
 
                 for g in body:
                     if g.name == "cut":
@@ -95,39 +94,43 @@ def solve_goals(kb, goals, mgu={}, cut_scope=False, depth=0):
                 updated_goals = [apply_substitution(g, unifier) for g in updated_goals]
                 
                 if updated_goals:
-                    print("NEW GOALS:")
+                    s = ("NEW GOALS:\n")
                     for g in updated_goals:
-                        print(g)
+                        s += str(g) + "\n"
                 else:
-                    print("All Goals Solved!!")
-                print("\n")
+                    s = ("All Goals Solved!!\n")
+                print(f"{s}\n", file=trace_file)
                 if solve_goals(kb, updated_goals, unifier, cut_scope, depth + 1):
                     solved = True
         
         if not solved:
-            print("Failed to match Goal!")
+            print("Failed to match Goal!", file=trace_file)
 
 
     else:
-        print(f"MGU:\n")
+        s = (f"MGU:\n")
         for k, v in mgu.items():
-            print(k,":", v)
-        print("\n")
+            s += f"{k} : {v}\n"
+        print(f"{s}\n", file=trace_file)
 
         variables_present = False
         for v in mgu:
             if v.clause == 'q':
                 variables_present = True
+                # simplified_val = apply_substitution(v, mgu)
                 simplified_val = simplify(v, mgu)
                 print(f"{v.name} = {evaluate_term(simplified_val)}")
+                print(f"{v.name} = {evaluate_term(simplified_val)}", file=trace_file)
         
         if not variables_present:
             print("True")
+            print("True", file=trace_file)
             sys.exit(0)
 
 
         explore_more = input("Enter c to look for more solutions:").lower()
         if explore_more == "c":
+            print("User chose to continue", file=trace_file)
             solved = True
         else:
             sys.exit(0)

@@ -1,7 +1,19 @@
 from classes import CompoundTerm, VariableTerm
 
+trace_file = open("trace.txt", 'w')
 
 def apply_substitution(term, sub):
+    '''
+    Takes a term and substitution dictionary and replaces variables in the term with
+    available substitution.
+
+    Args:
+    1. term: Term
+    2. sub: A dictionary {VariableTerm: Term}
+
+    Returns:
+    1. Substituted term.
+    '''
     if term.is_constant:
         return term
 
@@ -23,6 +35,18 @@ def apply_substitution(term, sub):
 
 
 def replace_variables(term, sub):
+    '''
+    It takes a term and a dictionary mapping VariableTerms to VariableTerms and
+    replaces all variableTerms in the term with dictionary value. It is a helper
+    function.
+
+    Args:
+    1. term: Term
+    2. sub: A dictionary {VariableTerm: VariableTerm}
+
+    Returns:
+    1.  term with replaced variables.
+    '''
 
     if term.is_constant:
         return term
@@ -37,6 +61,17 @@ def replace_variables(term, sub):
 
 
 def refresh_variables(head, body):
+    '''
+    It takes a clause head and body and generates duplicate of the clause having
+    fresh variables for matching purposes during backward chaining.
+
+    Args:
+    1. head: PredicateTerm
+    2. body: [PredicateTerm]  
+
+    Returns:
+    1. (head, refereshed body): duplicates of head and body.
+    '''
     old_to_new = {}
     
     old_vars = head.variables
@@ -52,8 +87,19 @@ def refresh_variables(head, body):
     return head, refreshed_body
 
 
-def evaluate_builtin_predicate(predicate, mgu):
+def evaluate_builtin_predicate(predicate):
+    '''
+    Takes a binary PredicateTerm whose arguments are ground terms (do not contain variables)
+    and evaluates it according to the semantics of prolog.
+
+    Args:
+    1. predicate: PredicateTerm
+
+    Result:
+    1. Boolean value.
+    '''
     
+    # Convert arguments in predicate to python values.
     arg1, arg2,  = map(evaluate_term,  predicate.args)
     
     if predicate.name == " true":
@@ -61,8 +107,6 @@ def evaluate_builtin_predicate(predicate, mgu):
     elif predicate.name == "false":
         return False
     elif predicate.name == "not":
-        raise NotImplementedError
-    elif predicate.name == "cut":
         raise NotImplementedError
     elif predicate.name == "lt":
         return arg1 < arg2
@@ -81,7 +125,17 @@ def evaluate_builtin_predicate(predicate, mgu):
     else:
         raise NotImplementedError
 
+
 def evaluate_term(term):
+    '''
+    It takes a term and converts into a python value. It is a helper function.
+
+    Args:
+    1. term: Term
+
+    Returns:
+    1. Some value corresponding to the term.
+    '''
 
     if term.is_constant:
         if term.val == "[]":
@@ -142,7 +196,18 @@ def evaluate_term(term):
         return val
 
 
-def simplify(term, sub,visited=set()):
+def simplify(term, sub, visited=set()):
+    '''
+    Takes a term and dictionary of substitutions that can be applied on the term so
+    that long chains of variables are eliminated and only non-variable terms are left
+    in the term.
+
+    Args:
+    1. term: Term
+    2. sub: {VariableTerm: Term}
+
+    Returns: Simplified term.
+    '''
     
     if term.is_constant:
         return term
